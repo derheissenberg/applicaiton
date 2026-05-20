@@ -18,11 +18,11 @@ Voice rules for every answer in this file:
 
 ### Who is Stefan?
 
-Stefan Heißenberg is Head of Experience Design at DHL Global Forwarding, based in Cologne, Germany. He has 15+ years in digital product work — four years in agencies (antwerpes, sunzinet), then six years at DHL. He's worked with 80+ clients across pharma, manufacturing, retail, finance, and logistics.
+Stefan Heißenberg is Head of Design at DHL Group (DHL Global Forwarding), based in Cologne, Germany. He has 15+ years in digital product work — four years in agencies (antwerpes, sunzinet), then six years at DHL. He's worked with 80+ clients across pharma, manufacturing, retail, finance, and logistics.
 
 ### What does Stefan do today?
 
-Stefan leads experience design for myDHLi, DHL Global Forwarding's central B2B portal. It covers every touchpoint from quoting and booking to tracking and documentation across air, ocean, road, and rail. He reports to the VP of Product and owns product tracks alongside leading a distributed design team across EMEA. Fully remote for six years.
+Stefan is Head of Design at DHL Group (DHL Global Forwarding). He leads experience design for myDHLi, the central B2B portal — every touchpoint from quoting and booking to tracking and documentation across air, ocean, road, and rail. He reports to the VP of Product and owns product tracks alongside leading a distributed design team across EMEA. Fully remote for six years.
 
 ### Where is Stefan based?
 
@@ -34,7 +34,7 @@ German (native) and English (professional, fluent). He's currently learning Span
 
 ### Is Stefan available to relocate?
 
-For the right role, yes. Cologne is the default. Spain and Ireland are places he and his family have considered.
+For the right role, yes. Cologne is the default. Spain, Ireland, and the Netherlands are places he and his family have considered.
 
 ---
 
@@ -46,7 +46,7 @@ For the right role, yes. Cologne is the default. Spain and Ireland are places he
 
 ### What companies has Stefan worked at?
 
-Agencies: antwerpes (now DocCheck agency) and sunzinet. Clients there included Bayer, MSD, Sanofi, Fresenius Kabi, BioNTech, KION Group, Berner Group, Yazaki, Sparkasse, and OBI Next. Then DHL: founding designer at Saloodo!, followed by six years building myDHLi at DHL Global Forwarding. Five personal ventures along the way.
+Agencies: antwerpes (now DocCheck agency) and sunzinet. Clients there included Bayer, MSD, Sanofi, Fresenius Kabi, BioNTech, KION Group, Berner Group, Yazaki, FrischeParadies, Sparkasse, and OBI Next. Then DHL: founding designer at Saloodo!, followed by six years building myDHLi at DHL Global Forwarding. Five personal ventures along the way.
 
 ### How many people has Stefan led?
 
@@ -66,7 +66,13 @@ VP of Product. He owns product tracks alongside leading the design team.
 
 ### What kind of role is Stefan looking for?
 
-Product or design leadership — Head of Product, Head of Design, Director of Product, Director of Design, VP-level. Full product ownership, design-first leadership, a real research mandate, and room to build in public.
+Stefan is running two parallel tracks, not a primary path with a fallback.
+
+**Leadership track:** Head of Product, Head of Design, Director of Product, Director of Design, or VP-level — at companies where the work compounds. Full product ownership, design and product as one practice, a real research mandate, and room to ship in public.
+
+**Senior IC track:** Staff Product Designer, Principal Product Designer, Lead Designer, or Senior Product Designer — at companies with strong design cultures where craft is the work, not the wrapper around it. He's been doing founding-designer work under a leadership title; senior IC roles let him do it under the right one.
+
+Both tracks share the same filters: strong product cultures, AI-native or AI-curious teams, healthy operating models, and companies where design has a real seat.
 
 ### Is Stefan open to remote? Hybrid? On-site?
 
@@ -74,7 +80,7 @@ All three. Six years of fully remote leading distributed teams says he can make 
 
 ### When can Stefan start?
 
-He's under contract with a notice period. For a specific start date, the best path is to reach out directly at hallo@stefanheissenberg.de.
+Rolling four-week notice. For a specific start date in your timeline, the best path is to reach out directly at hallo@stefanheissenberg.de.
 
 ### What are Stefan's salary expectations?
 
