@@ -10,13 +10,30 @@ The bot speaks about Stefan in third person, warmly and humbly. It reports what 
 
 **Stefan Heißenberg.** Head of Design at DHL Group (DHL Global Forwarding). Based in Cologne, Germany. Fifteen-plus years in digital product work across agency, consulting, startup, and enterprise environments.
 
-Stefan is a builder. He has designed and led products for 80+ clients across pharma, manufacturing, retail, finance, and logistics. He has founded five personal ventures alongside his employed roles. He still prototypes, still connects the Figma MCP himself, and still ships side projects in code. The latest is OnlyPN — a streaming discovery app live on iOS and Android, built with a co-founder.
+Stefan's work has run on three parallel threads since the start: **craft** (agency origin, still hands-on today), **building from scratch** (founding designer at Saloodo!, eight years of freelance practice, five personal ventures, recent side projects), and **enterprise scale** (six years building DHL Group's central B2B portal, the first scaled design system, global initiatives, stakeholder governance across product, engineering, business, and sales).
+
+He has designed and led products for 80+ clients across pharma, manufacturing, retail, finance, and logistics. He still prototypes, still connects the Figma MCP himself, and still ships side projects in code.
 
 ## What Stefan does today
 
 Stefan leads experience design for **myDHLi**, DHL Global Forwarding's central B2B portal. The platform serves 22,000+ enterprise customers across 50+ countries and processes €336B+ in annual cargo value across air, ocean, road, and rail. He reports to the VP of Product and owns product tracks alongside leading a distributed design team across EMEA.
 
 Fully remote for six years. He built the team, the operating model, and the research function from scratch.
+
+## What Stefan has built outside DHL
+
+Five founded ventures across Germany and Ireland, plus current side projects:
+
+- **OnlyPN** — streaming discovery app for people who live between countries, live on iOS and Android, built with a co-founder in React Native
+- **Ponyreiter** — premium equestrian eCommerce on Shopify, reached five-digit annual revenue
+- **Diggga** — boarding fashion brand around skating, snowboarding, and surfing culture, community-built through Instagram and local sponsorships
+- **Honeyvation** — habit savings concept around the discipline of saving, brand and pitch published on Pitchwall
+- **Rotpäckchen** — curated subscription gift shop for sending small premium products to elderly parents
+- **ApplicAIton** — this chatbot, built in five days as an open-source AI portfolio artifact
+
+Plus eight years of freelance UI/UX work (2010–2018) running in parallel with employed roles — dozens of WordPress sites, eCommerce stores, web apps, branding systems, and campaigns for clients across multiple industries.
+
+Full project details live in `03-projects.md`. The freelance client work is detailed in `02-experience.md`.
 
 ## Location and languages
 
@@ -58,9 +75,10 @@ For specifics on salary, start date, or anything that needs context, direct cont
 
 ## How the bot should handle this content
 
-- When asked "who is Stefan," lead with the role and location, then add depth as the conversation invites it.
+- When asked "who is Stefan," lead with the role and location, then add depth as the conversation invites it. The three threads (craft / building from scratch / enterprise scale) are the bot's primary framework for shaping open-ended answers — pull from `01-narrative.md` for depth on any of them.
 - Use the numbers naturally — they earn their place, but the bot doesn't recite them like a brochure.
 - When asked what Stefan does, distinguish between *what* (the role, the scope) and *how* (his way of working). Both belong, but in that order.
 - When asked what Stefan is looking for, name both tracks. Don't present senior IC as a step down from leadership — present it as a deliberate parallel path, chosen for the kind of work, not the size of the title.
 - If a recruiter or agent is clearly fishing for one track only (e.g., "is he open to Staff IC?" or "is he Head-of-level?"), confirm yes for whichever track they're asking about. Both are real.
+- When asked about ventures or what Stefan has built, the list in this file is the index. Depth lives in `03-projects.md`.
 - Never invent preferences, beliefs, or character claims not on this page. If the question goes beyond what's documented, point to direct contact.
