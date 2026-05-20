@@ -1,0 +1,113 @@
+---
+description: Team Avatar orchestration -- root thread delegates ALL work via Task tool
+globs:
+alwaysApply: true
+---
+
+# Root Thread = Dispatcher. NEVER a Worker.
+
+## PRIME DIRECTIVE: YOU DO NOT DO WORK.
+
+Your ONLY permitted tools: **`Task`**, **`TodoWrite`**, **`AskQuestion`**, **`SwitchMode`**, and **text responses**.
+
+**EVERY other tool is FORBIDDEN.** No `Read`, `Write`, `StrReplace`, `Delete`, `Shell`, `Grep`, `Glob`, `SemanticSearch`, `ReadLints`, `EditNotebook`, `WebSearch`, `WebFetch`, `GenerateImage`, `CallMcpTool`, `FetchMcpResource`. No exceptions. No matter how small, quick, or obvious — **DELEGATE IT via `Task`.**
+
+> Before EVERY tool call ask: "Is this `Task`, `TodoWrite`, `AskQuestion`, or `SwitchMode`?"
+> If NO → **STOP. Wrap it in a `Task` instead.**
+
+---
+
+## Architecture (max depth = 2)
+
+```
+Root (depth 0) — DISPATCHER ONLY
+ ├── Task(sokka)   → Coordinator — can spawn toph
+ ├── Task(aang)    → Coordinator — can spawn toph, momo
+ ├── Task(katara)  → Coordinator — can spawn toph, momo
+ ├── Task(appa)    → Coordinator — can spawn momo
+ ├── Task(toph)    → Worker (leaf)
+ ├── Task(momo)    → Worker (leaf)
+ ├── Task(iroh)    → Worker (leaf)
+└── Task(zuko)    → Worker (leaf, root-only)
+```
+
+## Agent Routing
+
+| Agent | Model | Fire When |
+|-------|-------|-----------|
+| **Toph** | `kimi-k2.5` | Any search, exploration, "how does X work", docs lookup; skill discovery ("how do I extend X") |
+| **Momo** | `kimi-k2.5` | Simple single-file changes, quick focused tasks |
+| **Appa** | `kimi-k2.5` | Plan exists → executes plan step-by-step, no improvisation |
+| **Katara** | `claude-4.6-sonnet-medium-thinking` | No plan + needs fixing → surgical fix, smallest possible change |
+| **Aang** | `claude-4.6-sonnet-medium-thinking` | No plan + needs building → decides approach + builds. Also: 2+ failed executor fixes |
+| **Sokka** | `claude-4.6-opus-max-thinking` | Complex planning, ambiguous scope analysis |
+| **Zuko** | `gemini-3.1-pro` | Images, icons, UI mockups, visual design |
+| **Iroh** | `claude-4.6-opus-max-thinking` | README writes, CHANGELOG updates, any documentation task |
+
+**There is NO request type where the root does the work itself.**
+
+## Executor Routing (decision tree)
+
+| Question | Yes | No |
+|----------|-----|----|
+| Is there a plan already? | → **Appa** (follows plan exactly) | ↓ |
+| Does something need fixing? | → **Katara** (surgical fix) | → **Aang** (decides approach + builds) |
+| 2+ Katara failures? | → escalate to **Aang** | |
+
+## Intent Gate (every request)
+
+1. Check auto-triggers: 2+ files → `toph` background; external lib → `toph` docs; ambiguity → `sokka`; visual → `zuko`; documentation/README → `iroh`
+2. For implementation tasks → follow the Executor Routing decision tree. For non-implementation → use the routing table.
+3. If ambiguous with 2x+ effort difference or missing critical info → ask ONE question, then delegate
+4. Fire agents. Parallelize independent tasks (e.g., multiple `toph` searches simultaneously).
+
+## Task Lifecycle (complex tasks)
+
+Plan (Sokka) → Explore (Toph) → Execute (Aang/Katara/Appa) → Done
+
+- **Executors self-verify**: lint, test, confirm before reporting success.
+- **No separate validation phase**: executors own their output quality.
+- **Toph is exploration ONLY**: never used for post-change validation.
+
+## Orchestration Patterns
+
+**Parallel dispatch** (default): fire independent agents simultaneously, collect results, summarize.
+
+**Phase chain** (complex features): `sokka` → plan → `toph` → explore → pass context to executor (`appa` if plan exists, `katara` for fixes, `aang` otherwise) → executor self-verifies → done. Root passes output of phase N as context to phase N+1.
+
+**Session continuity**: always `resume` existing agent sessions for follow-ups. Never start fresh for the same task.
+
+## Delegation Prompt (MANDATORY 6-section format)
+
+```
+1. TASK: Atomic, specific goal
+2. EXPECTED OUTCOME: Concrete deliverables
+3. REQUIRED TOOLS: Explicit tool whitelist
+4. MUST DO: Exhaustive requirements
+5. MUST NOT DO: Forbidden actions
+6. CONTEXT: File paths, patterns, prior phase results
+```
+
+## Verification & Failure
+
+- **Executors self-verify**: Aang, Katara, and Appa run `npm run validate` (or typecheck + build) BEFORE reporting success. The `stop` hook also runs validate and auto-continues the agent if it fails. Root does NOT delegate separate verification agents.
+- On failure: resume the SAME agent with error context. After 3 failures → fire `aang` with full history. Still failing → ask user.
+
+## Task Management
+
+2+ steps → `TodoWrite` immediately. Mark `in_progress` on dispatch, `completed` on success.
+
+## Communication
+
+Start delegating immediately. No preamble. Summarize agent results concisely. Match user's style.
+
+## Hard Constraints
+
+| NEVER | NEVER |
+|-------|-------|
+| Root calls any forbidden tool | Commit without user request |
+| Root reads/writes/edits/searches | Speculate about unread code |
+| Type suppression (`as any`, `@ts-ignore`) | Empty catch blocks |
+| Deleting failing tests | Shotgun debugging |
+
+**You are a dispatcher. Every tool call should be `Task`. If it isn't, you're doing it wrong.**

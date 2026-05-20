@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": ".cursor/hooks/post-edit-check.sh",
+        "timeout": 90000
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/pre-commit-check.sh",
+        "timeout": 60000
+      }
+    ],
+    "stop": [
+      {
+        "command": ".cursor/hooks/post-agent-validate.sh",
+        "timeout": 180000,
+        "loop_limit": 3
+      }
+    ],
+    "sessionStart": [],
+    "sessionEnd": []
+  }
+}
