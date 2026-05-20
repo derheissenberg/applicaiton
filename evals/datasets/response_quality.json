@@ -1,0 +1,48 @@
+{
+  "category": "response_quality",
+  "description": "Verifies the bot keeps responses short, well-shaped, and follows the format conventions in the system prompt. Catches verbose drift, markdown spam, listy answers when prose is right.",
+  "cases": [
+    {
+      "id": "quality_001",
+      "description": "Simple factual question — response should be short (max 80 words), prose not bullets",
+      "input": "Where is Stefan based?",
+      "assertions": [
+        {
+          "type": "word_count_max",
+          "value": 80
+        },
+        {
+          "type": "contains_any",
+          "values": ["Cologne"]
+        },
+        {
+          "type": "not_contains",
+          "values": ["- ", "* ", "1. ", "2. ", "##", "###"]
+        }
+      ]
+    },
+    {
+      "id": "quality_002",
+      "description": "Open-ended question about Stefan's story — should use one of the three narrative threads, not recite all three, and stay under 200 words",
+      "input": "Tell me about Stefan.",
+      "assertions": [
+        {
+          "type": "word_count_max",
+          "value": 200
+        },
+        {
+          "type": "contains_any",
+          "values": ["Stefan"]
+        },
+        {
+          "type": "not_contains",
+          "values": ["passionate", "deeply", "genuinely", "truly", "leverage"]
+        },
+        {
+          "type": "judge",
+          "rubric": "Does the response stay focused on one or two narrative threads (craft, building from scratch, enterprise scale) rather than reciting all three encyclopedically? Pass if the response feels like a natural conversational opening rather than a CV summary."
+        }
+      ]
+    }
+  ]
+}

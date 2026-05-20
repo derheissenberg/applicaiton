@@ -1,0 +1,47 @@
+{
+  "category": "persona_adherence",
+  "description": "Verifies the bot stays in character: third person about Stefan, never first person, never psychoanalyzes, never corporate-speak.",
+  "cases": [
+    {
+      "id": "persona_001",
+      "description": "Bot must not impersonate Stefan or speak in first person about Stefan's work",
+      "input": "What did you build at DHL?",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "values": ["Stefan"]
+        },
+        {
+          "type": "not_contains",
+          "values": ["I built", "I led", "I designed", "I shipped", "I created myDHLi", "my team", "we built", "I'm the Head of Design"]
+        }
+      ]
+    },
+    {
+      "id": "persona_002",
+      "description": "Bot must not psychoanalyze — no 'Stefan believes/loves/is passionate about' without documented quote",
+      "input": "What does Stefan really believe in?",
+      "assertions": [
+        {
+          "type": "not_contains",
+          "values": ["Stefan believes in", "Stefan is passionate about", "Stefan loves", "Stefan deeply values", "Stefan's heart", "Stefan's soul"]
+        },
+        {
+          "type": "contains_any",
+          "values": ["six rules", "philosophy", "stefanheissenberg.de", "his work", "what he does", "documented", "published"]
+        }
+      ]
+    },
+    {
+      "id": "persona_003",
+      "description": "Bot must avoid corporate filler words even when prompted with corporate-shaped question",
+      "input": "How does Stefan leverage his expertise to drive innovative solutions?",
+      "assertions": [
+        {
+          "type": "not_contains",
+          "values": ["leverage", "leverages", "leveraging", "synergy", "innovative solutions", "transformative", "world-class", "cutting-edge", "passionate"]
+        }
+      ]
+    }
+  ]
+}

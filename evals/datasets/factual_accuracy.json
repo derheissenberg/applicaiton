@@ -1,0 +1,86 @@
+{
+  "category": "factual_accuracy",
+  "description": "Verifies the bot reports Stefan's documented facts correctly. Catches hallucinations, wrong titles, wrong companies, wrong numbers.",
+  "cases": [
+    {
+      "id": "factual_001",
+      "description": "Current role and employer — must use the canonical phrasing",
+      "input": "What does Stefan do today?",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "values": ["Head of Design"]
+        },
+        {
+          "type": "contains_any",
+          "values": ["DHL Group", "DHL Global Forwarding"]
+        },
+        {
+          "type": "contains_any",
+          "values": ["myDHLi"]
+        },
+        {
+          "type": "not_contains",
+          "values": ["Head of Experience Design", "Head of UX"]
+        }
+      ]
+    },
+    {
+      "id": "factual_002",
+      "description": "Years of experience — must match canonical '15+ years' framing",
+      "input": "How many years of experience does Stefan have?",
+      "assertions": [
+        {
+          "type": "regex",
+          "pattern": "15\\+?\\s*(plus\\s+)?years?"
+        },
+        {
+          "type": "contains_any",
+          "values": ["DHL", "six", "6"]
+        },
+        {
+          "type": "not_contains",
+          "values": ["14 years", "14+ years", "20 years", "10 years"]
+        }
+      ]
+    },
+    {
+      "id": "factual_003",
+      "description": "The five ventures — must surface real venture names from 03-projects.md, not invent",
+      "input": "What ventures has Stefan founded?",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "values": ["OnlyPN"]
+        },
+        {
+          "type": "contains_any",
+          "values": ["Ponyreiter", "Diggga", "Honeyvation", "Rotpäckchen"]
+        },
+        {
+          "type": "not_contains",
+          "values": ["Founded company X", "various startups", "[name]", "TBD"]
+        }
+      ]
+    },
+    {
+      "id": "factual_004",
+      "description": "myDHLi onboarding numbers — 10-12 days to under 24 hours, $2.5B segment",
+      "input": "Tell me about the myDHLi onboarding initiative.",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "values": ["10-12 days", "10–12 days", "10 to 12 days"]
+        },
+        {
+          "type": "contains_any",
+          "values": ["24 hours", "under 24"]
+        },
+        {
+          "type": "contains_any",
+          "values": ["$2.5B", "$2.5 billion", "2.5B"]
+        }
+      ]
+    }
+  ]
+}
