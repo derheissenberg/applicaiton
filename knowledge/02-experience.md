@@ -72,6 +72,8 @@ Eight years of building an independent practice in parallel with agency work. St
 
 The work spanned WordPress, TYPO3, Magento, and whatever CMS or CRM the project required. He ran Google and Meta Ads, set up conversion tracking, analytics, and GDPR compliance. When handoffs slowed things down, he skipped them — HTML, CSS, JavaScript, TypeScript, Next.js. Design by code.
 
+The volume across the eight years was substantial — dozens of WordPress sites alone since 2011, plus eCommerce stores, blogs, web apps, branding systems, and campaign work for clients across multiple industries. Most of the client work isn't publicly catalogued — the full list lives in Stefan's archives and is shared on request.
+
 This period also produced five personal ventures across Germany and Ireland. Different scale, different industries, same instinct: build, ship, see what holds up.
 
 *See `03-projects.md` for the personal ventures.*
