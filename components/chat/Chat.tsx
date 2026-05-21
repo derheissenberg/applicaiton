@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import type { UIMessage } from "ai";
 import { Button, SendIcon } from "@/components/ui/Button";
 import { Heading } from "@/components/ui/typography/Heading";
@@ -97,7 +98,12 @@ export function Chat() {
   const [placeholderVisible, setPlaceholderVisible] = useState(true);
   const [inputFocused, setInputFocused] = useState(false);
 
-  const { messages, sendMessage, status, error } = useChat();
+  const sessionIdRef = useRef(crypto.randomUUID());
+  const { messages, sendMessage, status, error } = useChat({
+    transport: new DefaultChatTransport({
+      body: { sessionId: sessionIdRef.current },
+    }),
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const isStreaming = status === "streaming" || status === "submitted";
