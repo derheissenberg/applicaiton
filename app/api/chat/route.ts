@@ -18,39 +18,6 @@ async function handler(req: Request) {
   const ip = getClientIp(req);
   const limitResult = await ratelimit.limit(ip);
   const { success, reset, remaining, limit } = limitResult;
-  const limitReason =
-    "reason" in limitResult
-      ? (limitResult as { reason?: string }).reason
-      : undefined;
-
-  // #region agent log
-  fetch("http://127.0.0.1:7336/ingest/d59e9ced-9d47-44ed-8229-0f50553ae11f", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Debug-Session-Id": "d3a49b",
-    },
-    body: JSON.stringify({
-      sessionId: "d3a49b",
-      runId: "pre-fix",
-      hypothesisId: "H1-H2-H4",
-      location: "app/api/chat/route.ts:rate-limit",
-      message: "ratelimit.limit result",
-      data: {
-        ip,
-        success,
-        remaining,
-        limit,
-        limitReason,
-        hasUpstashUrl: Boolean(process.env.UPSTASH_REDIS_REST_URL),
-        hasUpstashToken: Boolean(process.env.UPSTASH_REDIS_REST_TOKEN),
-        forwarded: req.headers.get("x-forwarded-for") ?? null,
-        realIp: req.headers.get("x-real-ip") ?? null,
-      },
-      timestamp: Date.now(),
-    }),
-  }).catch(() => {});
-  // #endregion
 
   if (!success) {
     return Response.json(

@@ -11,20 +11,35 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-outfit), system-ui, sans-serif;
+  --animate-gradient-shift: gradient 6s ease infinite;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-outfit), system-ui, sans-serif;
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-outfit), system-ui, sans-serif;
+  }
 }
 
-.font-outfit {
-  font-family: var(--font-outfit), system-ui, sans-serif;
+@keyframes gradient {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
-.type-kicker {
-  font-family: var(--font-kode-mono), ui-monospace, monospace;
-  font-weight: 500;
-  letter-spacing: 0.24em;
+@layer components {
+  .font-outfit {
+    font-family: var(--font-outfit), system-ui, sans-serif;
+  }
+
+  .type-kicker {
+    font-family: var(--font-kode-mono), ui-monospace, monospace;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+  }
 }

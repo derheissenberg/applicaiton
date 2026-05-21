@@ -1,10 +1,23 @@
 import { cn } from "@/lib/utils";
+import { accentGradientButton } from "@/lib/gradient-styles";
+
+const typoPrimary =
+  "font-[family-name:var(--font-kode-mono)] text-[13px] font-bold uppercase leading-none tracking-[0.18em] antialiased";
 
 type ButtonLinkProps = {
   variant: "primary" | "outline";
   href: string;
   children: React.ReactNode;
   className?: string;
+};
+
+type ButtonPrimaryActionProps = {
+  variant: "primary";
+  children: React.ReactNode;
+  className?: string;
+  disabled?: boolean;
+  onClick?: () => void;
+  type?: "button" | "submit";
 };
 
 type ButtonIconProps = {
@@ -17,12 +30,44 @@ type ButtonIconProps = {
   type?: "button" | "submit";
 };
 
-type ButtonProps = ButtonLinkProps | ButtonIconProps;
+type ButtonProps = ButtonLinkProps | ButtonPrimaryActionProps | ButtonIconProps;
 
 export function Button(props: ButtonProps) {
+  if (props.variant === "primary" && !("href" in props)) {
+    const {
+      children,
+      className,
+      disabled,
+      onClick,
+      type = "button",
+    } = props;
+    return (
+      <button
+        type={type}
+        disabled={disabled}
+        onClick={onClick}
+        className={cn(
+          "inline-flex items-center justify-center rounded-[10px] py-[14px] px-[22px] text-white",
+          accentGradientButton,
+          typoPrimary,
+          className
+        )}
+        style={{ fontFamily: "var(--font-kode-mono), ui-monospace, monospace" }}
+      >
+        {children}
+      </button>
+    );
+  }
+
   if (props.variant === "icon") {
-    const { children, className, disabled, onClick, type = "button", "aria-label": ariaLabel } =
-      props;
+    const {
+      children,
+      className,
+      disabled,
+      onClick,
+      type = "button",
+      "aria-label": ariaLabel,
+    } = props;
     return (
       <button
         type={type}
@@ -30,9 +75,10 @@ export function Button(props: ButtonProps) {
         disabled={disabled}
         onClick={onClick}
         className={cn(
-          "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-black transition-opacity",
-          "hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
-          "disabled:cursor-not-allowed disabled:opacity-40",
+          "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-white",
+          accentGradientButton,
+          disabled && "opacity-50",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
           className
         )}
       >
@@ -44,11 +90,24 @@ export function Button(props: ButtonProps) {
   const { variant, href, children, className } = props;
   const linkClasses =
     variant === "primary"
-      ? "inline-flex items-center justify-center rounded-[10px] bg-white px-[22px] py-[14px] text-sm font-medium text-black"
-      : "inline-flex items-center justify-center rounded-[10px] border border-white/20 px-[20px] py-[12px] text-sm text-white hover:border-white/40 hover:bg-white/[0.06]";
+      ? cn(
+          "inline-flex items-center justify-center rounded-[10px] py-[14px] px-[22px] text-white",
+          accentGradientButton,
+          typoPrimary
+        )
+      : cn(
+          "inline-flex items-center justify-center rounded-[10px] border border-white/20",
+          "py-[12px] px-[20px] text-[12px] font-semibold uppercase leading-none tracking-[0.18em]",
+          "text-white transition-[background-color,border-color] duration-200",
+          "hover:border-white/40 hover:bg-white/[0.06]"
+        );
 
   return (
-    <a href={href} className={cn(linkClasses, className)}>
+    <a
+      href={href}
+      className={cn(linkClasses, className)}
+      style={{ fontFamily: "var(--font-kode-mono), ui-monospace, monospace" }}
+    >
       {children}
     </a>
   );
