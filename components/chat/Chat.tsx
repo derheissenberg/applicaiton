@@ -161,28 +161,6 @@ export function Chat() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, lastAssistantText, showStreamingDots]);
 
-  useEffect(() => {
-    if (!error) return;
-    // #region agent log
-    fetch("http://127.0.0.1:7336/ingest/d59e9ced-9d47-44ed-8229-0f50553ae11f", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "d3a49b" },
-      body: JSON.stringify({
-        sessionId: "d3a49b",
-        hypothesisId: "H3-H5",
-        location: "components/chat/Chat.tsx:useChat-error",
-        message: "useChat error state",
-        data: {
-          errorName: error instanceof Error ? error.name : typeof error,
-          errorMessage: error instanceof Error ? error.message : String(error),
-          status,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
-  }, [error, status]);
-
   const handleSend = useCallback(() => {
     const text = input.trim();
     if (!text || isStreaming) return;
