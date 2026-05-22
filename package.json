@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "knowledge:check": "tsx lib/knowledge.ts"
+    "knowledge:check": "tsx lib/knowledge.ts",
+    "eval": "tsx evals/runner.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.78",
