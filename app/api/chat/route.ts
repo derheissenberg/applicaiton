@@ -62,7 +62,7 @@ async function handler(req: Request) {
 
     setActiveTraceIO({ input: lastUserText });
 
-    trace.getActiveSpan()?.setAttribute("langfuse.session.id", validSessionId);
+    trace.getActiveSpan()?.setAttribute("session.id", validSessionId);
 
     const system = await buildSystemPrompt();
 
