@@ -1,5 +1,10 @@
 import { anthropic } from "@ai-sdk/anthropic";
-import { streamText, convertToModelMessages, type UIMessage } from "ai";
+import {
+  streamText,
+  convertToModelMessages,
+  validateUIMessages,
+  type UIMessage,
+} from "ai";
 import { after } from "next/server";
 import { buildSystemPrompt } from "@/lib/prompt";
 import { ratelimit, getClientIp } from "@/lib/ratelimit";
@@ -48,17 +53,21 @@ async function handler(req: Request) {
       return Response.json({ error: "messages required" }, { status: 400 });
     }
 
+    const validatedMessages = await validateUIMessages({ messages });
+
     const validSessionId =
       typeof sessionId === "string" && sessionId.length > 0
         ? sessionId
         : crypto.randomUUID();
 
-    const lastUserMessage = messages.filter((m) => m.role === "user").pop();
+    const lastUserMessage = validatedMessages
+      .filter((m) => m.role === "user")
+      .pop();
     const lastUserText =
       lastUserMessage?.parts
         ?.filter((p) => p.type === "text")
-        .map((p) => p.text)
-        .join("") ?? "";
+        ?.map((p) => p.text)
+        ?.join("") ?? "";
 
     setActiveTraceIO({ input: lastUserText });
 
@@ -69,7 +78,7 @@ async function handler(req: Request) {
     const result = streamText({
       model: anthropic(process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5"),
       system,
-      messages: await convertToModelMessages(messages),
+      messages: await convertToModelMessages(validatedMessages),
       maxRetries: 4,
       experimental_telemetry: {
         isEnabled: true,
