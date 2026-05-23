@@ -15,6 +15,27 @@ import { langfuseSpanProcessor } from "@/instrumentation";
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
+const ALLOWED_ORIGINS = [
+  "https://stefanheissenberg.de",
+  "https://www.stefanheissenberg.de",
+  "http://127.0.0.1:3003",
+  "http://localhost:3003",
+  "https://applicaiton.vercel.app",
+];
+
+function getCorsHeaders(req: Request): HeadersInit {
+  const origin = req.headers.get("origin");
+  if (!origin || !ALLOWED_ORIGINS.includes(origin)) {
+    return {};
+  }
+
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+}
+
 async function handler(req: Request) {
   const rootSpan = trace.getActiveSpan();
   after(async () => {
@@ -34,6 +55,7 @@ async function handler(req: Request) {
       {
         status: 429,
         headers: {
+          ...getCorsHeaders(req),
           "Retry-After": "60",
           "X-RateLimit-Limit": String(limit),
           "X-RateLimit-Reset": reset.toString(),
@@ -50,7 +72,10 @@ async function handler(req: Request) {
     } = await req.json();
 
     if (!Array.isArray(messages) || messages.length === 0) {
-      return Response.json({ error: "messages required" }, { status: 400 });
+      return Response.json(
+        { error: "messages required" },
+        { status: 400, headers: getCorsHeaders(req) }
+      );
     }
 
     const validatedMessages = await validateUIMessages({ messages });
@@ -95,6 +120,7 @@ async function handler(req: Request) {
 
     return result.toUIMessageStreamResponse({
       headers: {
+        ...getCorsHeaders(req),
         "X-RateLimit-Limit": String(limit),
         "X-RateLimit-Remaining": String(remaining),
       },
@@ -102,7 +128,10 @@ async function handler(req: Request) {
   } catch (error) {
     const errMsg = error instanceof Error ? error.message : String(error);
     console.error("[api/chat] error:", errMsg);
-    return Response.json({ error: "Something went wrong" }, { status: 500 });
+    return Response.json(
+      { error: "Something went wrong" },
+      { status: 500, headers: getCorsHeaders(req) }
+    );
   }
 }
 
@@ -110,3 +139,10 @@ export const POST = observe(handler, {
   name: "chat-stream",
   endOnExit: false,
 });
+
+export async function OPTIONS(req: Request) {
+  return new Response(null, {
+    status: 204,
+    headers: getCorsHeaders(req),
+  });
+}
