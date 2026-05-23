@@ -2,11 +2,13 @@ import { cn } from "@/lib/utils";
 
 type HeroIntroProps = {
   className?: string;
+  style?: React.CSSProperties;
 };
 
 export function Kicker({
   children,
   className,
+  style,
 }: HeroIntroProps & { children: React.ReactNode }) {
   return (
     <p
@@ -18,6 +20,7 @@ export function Kicker({
         fontFamily: "var(--font-kode-mono), ui-monospace, monospace",
         fontWeight: 500,
         letterSpacing: "0.32em",
+        ...style,
       }}
     >
       {children}
@@ -28,6 +31,7 @@ export function Kicker({
 export function HeroTitle({
   children,
   className,
+  style,
 }: HeroIntroProps & { children: React.ReactNode }) {
   return (
     <h2
@@ -35,7 +39,7 @@ export function HeroTitle({
         "text-[38px] font-bold leading-[1.05] tracking-[-0.02em] text-white sm:text-5xl lg:text-[56px]",
         className
       )}
-      style={{ fontFamily: "var(--font-outfit), system-ui, sans-serif" }}
+      style={{ fontFamily: "var(--font-outfit), system-ui, sans-serif", ...style }}
     >
       {children}
     </h2>
@@ -45,6 +49,7 @@ export function HeroTitle({
 export function HeroDescription({
   children,
   className,
+  style,
 }: HeroIntroProps & { children: React.ReactNode }) {
   return (
     <p
@@ -52,7 +57,7 @@ export function HeroDescription({
         "mx-auto mt-[22px] max-w-[56ch] text-[18px] font-normal leading-[1.6] text-white/[0.72]",
         className
       )}
-      style={{ fontFamily: "var(--font-outfit), system-ui, sans-serif" }}
+      style={{ fontFamily: "var(--font-outfit), system-ui, sans-serif", ...style }}
     >
       {children}
     </p>

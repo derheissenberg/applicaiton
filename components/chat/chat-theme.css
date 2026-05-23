@@ -1,0 +1,159 @@
+/* chat-theme.css - dark-tokyo theme scoped to chat-root */
+
+.chat-root[data-theme="dark-tokyo"] {
+  /* Page/Background */
+  --chat-page-bg: var(--background, #080808);
+
+  /* Typography - Hero */
+  --chat-hero-kicker-fg: rgba(255, 255, 255, 0.6);
+  --chat-hero-title-fg: white;
+  --chat-hero-description-fg: rgba(255, 255, 255, 0.72);
+
+  /* Accent Gradient */
+  --chat-accent-gradient-from: #22d3ee;
+  --chat-accent-gradient-mid: #3b82f6;
+  --chat-accent-gradient-to: #22d3ee;
+
+  /* Input */
+  --chat-input-border: rgba(255, 255, 255, 0.2);
+  --chat-input-border-focus: rgba(255, 255, 255, 0.4);
+  --chat-input-bg-focus: rgba(255, 255, 255, 0.06);
+  --chat-input-fg: white;
+  --chat-input-placeholder-fg: rgba(255, 255, 255, 0.5);
+  --chat-input-radius: 10px;
+
+  /* Bubbles */
+  --chat-bubble-user-bg: #171717;
+  --chat-bubble-user-fg: white;
+  --chat-bubble-assistant-bg: #f5f5f5;
+  --chat-bubble-assistant-fg: #171717;
+  --chat-bubble-assistant-border: #e5e5e5;
+  --chat-bubble-radius: 16px;
+
+  /* Error/Close */
+  --chat-error-fg: rgba(255, 255, 255, 0.8);
+  --chat-close-fg: rgba(255, 255, 255, 0.8);
+  --chat-close-hover-fg: white;
+
+  /* Layout */
+  --chat-overlay-z: 50;
+  --chat-font-sans: var(--font-outfit), system-ui, sans-serif;
+  --chat-font-mono: var(--font-kode-mono), ui-monospace, monospace;
+  --chat-conversation-max-width: 700px;
+  --chat-hero-max-width: 820px;
+  --chat-input-max-width: 56ch;
+}
+
+/* Utility Classes */
+
+/* Accent Gradient (matches lib/gradient-styles.ts but using CSS vars) */
+.chat-accent-gradient {
+  background: linear-gradient(to right, var(--chat-accent-gradient-from), var(--chat-accent-gradient-mid), var(--chat-accent-gradient-to));
+  background-size: 300% auto;
+  background-position: 0% 50%;
+  animation: chat-gradient-shift 6s ease infinite;
+}
+
+.chat-accent-text {
+  background: linear-gradient(to right, var(--chat-accent-gradient-from), var(--chat-accent-gradient-mid), var(--chat-accent-gradient-to));
+  background-size: 300% auto;
+  background-position: 0% 50%;
+  animation: chat-gradient-shift 6s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes chat-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Input Shell */
+.chat-input-shell {
+  display: flex;
+  min-height: 48px;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  border-radius: var(--chat-input-radius);
+  border: 1px solid var(--chat-input-border);
+  background: transparent;
+  padding: 12px 16px;
+  transition: background-color 200ms ease-out, border-color 200ms ease-out;
+}
+
+.chat-input-shell:focus-within {
+  border-color: var(--chat-input-border-focus);
+  background: var(--chat-input-bg-focus);
+}
+
+.chat-input-field {
+  width: 100%;
+  background: transparent;
+  color: var(--chat-input-fg);
+  font-family: var(--chat-font-sans);
+  font-size: 0.875rem;
+  outline: none;
+}
+
+@media (min-width: 640px) {
+  .chat-input-field {
+    font-size: 1rem;
+  }
+}
+
+/* Chat Bubbles */
+.chat-bubble-user {
+  max-width: 80%;
+  border-radius: var(--chat-bubble-radius);
+  background: var(--chat-bubble-user-bg);
+  color: var(--chat-bubble-user-fg);
+  padding: 8px 16px;
+}
+
+.chat-bubble-assistant {
+  max-width: 90%;
+  border-radius: var(--chat-bubble-radius);
+  border: 1px solid var(--chat-bubble-assistant-border);
+  background: var(--chat-bubble-assistant-bg);
+  color: var(--chat-bubble-assistant-fg);
+  padding: 8px 16px;
+}
+
+/* Error Text */
+.chat-error-text {
+  color: var(--chat-error-fg);
+  font-family: var(--chat-font-sans);
+  font-size: 0.875rem;
+}
+
+/* Close Button */
+.chat-close-btn {
+  color: var(--chat-close-fg);
+  transition: color 200ms ease-out;
+}
+
+.chat-close-btn:hover {
+  color: var(--chat-close-hover-fg);
+}
+
+/* Transition States for Conversation Overlay */
+.chat-conversation-overlay {
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+.chat-conversation-overlay[data-entering="true"] {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.chat-conversation-overlay[data-entering="false"] {
+  opacity: 0;
+  transform: scale(0.98);
+}
