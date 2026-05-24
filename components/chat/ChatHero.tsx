@@ -51,14 +51,27 @@ export function ChatHero({
   return (
     <div
       className={cn(
-        "flex w-full flex-col items-center justify-center px-5 py-20 lg:px-12 lg:py-[120px]",
+        "relative flex w-full flex-col items-center justify-center px-5 py-20 lg:px-12 lg:py-[120px]",
         "transition-[opacity,transform] duration-300 ease-out",
         isHidden
           ? "pointer-events-none -translate-y-5 opacity-0"
           : "translate-y-0 opacity-100"
       )}
     >
-      <div className="mx-auto w-full max-w-[var(--chat-hero-max-width)] text-center">
+      {/* Decorative portrait layers - styles from CSS vars only */}
+      <div
+        aria-hidden="true"
+        className="chat-portrait chat-portrait-desktop pointer-events-none"
+      />
+      <div
+        aria-hidden="true"
+        className="chat-portrait chat-portrait-mobile pointer-events-none"
+      />
+      <div
+        aria-hidden="true"
+        className="chat-portrait chat-portrait-overlay pointer-events-none"
+      />
+      <div className="relative z-10 mx-auto w-full max-w-[var(--chat-hero-max-width)] text-center">
         {/* Pass theme colors via style/class overrides */}
         <Kicker
           className="text-[var(--chat-hero-kicker-fg)]"

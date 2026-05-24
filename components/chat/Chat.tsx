@@ -8,7 +8,11 @@ import { ChatConversation } from "./ChatConversation";
 import { useBodyScrollLock } from "./useBodyScrollLock";
 import "./chat-theme.css";
 
-export function Chat() {
+export type ChatProps = {
+  theme?: "dark-tokyo" | "stefan-portfolio";
+};
+
+export function Chat({ theme = "dark-tokyo" }: ChatProps) {
   // Mode state: "hero" | "conversation"
   const [mode, setMode] = useState<"hero" | "conversation">("hero");
   
@@ -125,7 +129,7 @@ export function Chat() {
   }, [mode]);
 
   return (
-    <div className="chat-root w-full" data-theme="dark-tokyo">
+    <div className="chat-root w-full" data-theme={theme}>
       {mode === "hero" && (
         <ChatHero
           input={input}

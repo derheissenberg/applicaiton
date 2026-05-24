@@ -42,6 +42,68 @@
   --chat-conversation-max-width: 700px;
   --chat-hero-max-width: 820px;
   --chat-input-max-width: 56ch;
+
+  /* Portrait (defaults to none for dark-tokyo) */
+  --chat-portrait-desktop: none;
+  --chat-portrait-position-desktop: right center;
+  --chat-portrait-size-desktop: contain;
+  --chat-portrait-mobile: none;
+  --chat-portrait-position-mobile: center;
+  --chat-portrait-size-mobile: cover;
+  --chat-portrait-overlay: transparent;
+}
+
+.chat-root[data-theme="stefan-portfolio"] {
+  /* Page/Background */
+  --chat-page-bg: var(--background, #080808);
+
+  /* Typography - Hero */
+  --chat-hero-kicker-fg: rgba(255, 255, 255, 0.6);
+  --chat-hero-title-fg: white;
+  --chat-hero-description-fg: rgba(255, 255, 255, 0.72);
+
+  /* Accent Gradient */
+  --chat-accent-gradient-from: #22d3ee;
+  --chat-accent-gradient-mid: #3b82f6;
+  --chat-accent-gradient-to: #22d3ee;
+
+  /* Input */
+  --chat-input-border: rgba(255, 255, 255, 0.2);
+  --chat-input-border-focus: rgba(255, 255, 255, 0.4);
+  --chat-input-bg-focus: rgba(255, 255, 255, 0.06);
+  --chat-input-fg: white;
+  --chat-input-placeholder-fg: rgba(255, 255, 255, 0.5);
+  --chat-input-radius: 10px;
+
+  /* Bubbles */
+  --chat-bubble-user-bg: #171717;
+  --chat-bubble-user-fg: white;
+  --chat-bubble-assistant-bg: #f5f5f5;
+  --chat-bubble-assistant-fg: #171717;
+  --chat-bubble-assistant-border: #e5e5e5;
+  --chat-bubble-radius: 16px;
+
+  /* Error/Close */
+  --chat-error-fg: rgba(255, 255, 255, 0.8);
+  --chat-close-fg: rgba(255, 255, 255, 0.8);
+  --chat-close-hover-fg: white;
+
+  /* Layout */
+  --chat-overlay-z: 50;
+  --chat-font-sans: var(--font-outfit), system-ui, sans-serif;
+  --chat-font-mono: var(--font-kode-mono), ui-monospace, monospace;
+  --chat-conversation-max-width: 700px;
+  --chat-hero-max-width: 820px;
+  --chat-input-max-width: 56ch;
+
+  /* Portrait (defaults to none, override via inline styles) */
+  --chat-portrait-desktop: none;
+  --chat-portrait-position-desktop: right center;
+  --chat-portrait-size-desktop: contain;
+  --chat-portrait-mobile: none;
+  --chat-portrait-position-mobile: center;
+  --chat-portrait-size-mobile: cover;
+  --chat-portrait-overlay: radial-gradient(ellipse at center, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.35) 45%, transparent 70%);
 }
 
 /* Utility Classes */
@@ -156,4 +218,42 @@
 .chat-conversation-overlay[data-entering="false"] {
   opacity: 0;
   transform: scale(0.98);
+}
+
+/* Portrait Utility Classes */
+.chat-portrait {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.chat-portrait-desktop {
+  display: none;
+  background-image: var(--chat-portrait-desktop);
+  background-position: var(--chat-portrait-position-desktop);
+  background-size: var(--chat-portrait-size-desktop);
+}
+
+.chat-portrait-mobile {
+  display: block;
+  background-image: var(--chat-portrait-mobile);
+  background-position: var(--chat-portrait-position-mobile);
+  background-size: var(--chat-portrait-size-mobile);
+}
+
+@media (min-width: 768px) {
+  .chat-portrait-desktop {
+    display: block;
+  }
+  .chat-portrait-mobile {
+    display: none;
+  }
+}
+
+.chat-portrait-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--chat-portrait-overlay);
 }

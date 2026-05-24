@@ -1,1 +1,1 @@
-export { Chat } from "./Chat";
+export { Chat, type ChatProps } from "./Chat";
