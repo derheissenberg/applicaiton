@@ -36,7 +36,7 @@ export function ChatInputRow({
 
   return (
     <div
-      className={`w-full max-w-[var(--chat-input-max-width)] text-left ${className ?? "mt-9"}`}
+      className={`mx-auto w-full max-w-[var(--chat-input-max-width)] text-left ${className ?? "mt-9"}`}
     >
       <div className="flex w-full items-center gap-2">
         <div className="chat-input-shell relative">
