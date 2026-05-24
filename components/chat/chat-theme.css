@@ -43,6 +43,10 @@
   --chat-hero-max-width: 820px;
   --chat-input-max-width: 56ch;
 
+  /* Hero layout */
+  --chat-hero-min-height-desktop: 100dvh;
+  --chat-hero-min-height-mobile: 100dvh;
+
   /* Portrait (defaults to none for dark-tokyo) */
   --chat-portrait-desktop: none;
   --chat-portrait-position-desktop: right center;
@@ -95,6 +99,10 @@
   --chat-conversation-max-width: 700px;
   --chat-hero-max-width: 820px;
   --chat-input-max-width: 56ch;
+
+  /* Hero layout */
+  --chat-hero-min-height-desktop: 750px;
+  --chat-hero-min-height-mobile: 100dvh;
 
   /* Portrait (defaults to none, override via inline styles) */
   --chat-portrait-desktop: inherit;
@@ -256,4 +264,14 @@
   inset: 0;
   pointer-events: none;
   background: var(--chat-portrait-overlay);
+}
+
+/* Hero min-height (responsive via theme variables) */
+.chat-hero-min-height {
+  min-height: var(--chat-hero-min-height-mobile);
+}
+@media (min-width: 768px) {
+  .chat-hero-min-height {
+    min-height: var(--chat-hero-min-height-desktop);
+  }
 }
