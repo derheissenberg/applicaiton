@@ -18,12 +18,19 @@
   --chat-accent-gradient-to: #22d3ee;
 
   /* Input */
+  --chat-input-bg: oklch(0.22 0 0);
   --chat-input-border: rgba(255, 255, 255, 0.2);
   --chat-input-border-focus: rgba(255, 255, 255, 0.4);
   --chat-input-bg-focus: rgba(255, 255, 255, 0.06);
+  --chat-input-focus-shadow: rgba(34, 211, 238, 0.12);
   --chat-input-fg: white;
   --chat-input-placeholder-fg: rgba(255, 255, 255, 0.5);
   --chat-input-radius: 10px;
+  --chat-input-padding-y: 0.875rem;
+  --chat-input-padding-x: 1.125rem;
+  --chat-input-font-size: 0.9375rem;
+  --chat-input-min-height: 52px;
+  --chat-input-transition-duration: 180ms;
 
   /* Surface (conversation overlay) */
   --chat-surface-bg: #0a0a0a;
@@ -95,12 +102,19 @@
   --chat-accent-gradient-to: oklch(0.52 0.22 262);
 
   /* Input - Lovable oklch values */
+  --chat-input-bg: oklch(0.2 0.007 260);
   --chat-input-border: oklch(1 0 0 / 0.08);
   --chat-input-border-focus: oklch(0.66 0.2 252 / 0.55);
   --chat-input-bg-focus: oklch(0.21 0.008 260);
+  --chat-input-focus-shadow: oklch(0.66 0.2 252 / 0.1);
   --chat-input-fg: oklch(0.985 0 0);
   --chat-input-placeholder-fg: oklch(0.55 0.01 260);
   --chat-input-radius: 0.875rem;
+  --chat-input-padding-y: 0.875rem;
+  --chat-input-padding-x: 1.125rem;
+  --chat-input-font-size: 0.9375rem;
+  --chat-input-min-height: 52px;
+  --chat-input-transition-duration: 180ms;
 
   /* Surface - Lovable oklch values */
   --chat-surface-bg: oklch(0.185 0.006 260);
@@ -406,24 +420,28 @@
 }
 
 /* =========================================================
-   Input Shell (updated to use --chat-surface-bg)
+   Input Shell (Lovable .chat-input parity)
    ========================================================= */
 .chat-input-shell {
   display: flex;
-  min-height: 48px;
+  min-height: var(--chat-input-min-height);
   min-width: 0;
   flex: 1;
   align-items: center;
   border-radius: var(--chat-input-radius);
   border: 1px solid var(--chat-input-border);
-  background: var(--chat-surface-bg);
-  padding: 12px 16px;
-  transition: background-color 200ms ease-out, border-color 200ms ease-out;
+  background: var(--chat-input-bg);
+  padding: var(--chat-input-padding-y) var(--chat-input-padding-x);
+  transition:
+    border-color var(--chat-input-transition-duration) ease,
+    background-color var(--chat-input-transition-duration) ease,
+    box-shadow var(--chat-input-transition-duration) ease;
 }
 
 .chat-input-shell:focus-within {
   border-color: var(--chat-input-border-focus);
   background: var(--chat-input-bg-focus);
+  box-shadow: 0 0 0 4px var(--chat-input-focus-shadow);
 }
 
 .chat-input-field {
@@ -431,14 +449,9 @@
   background: transparent;
   color: var(--chat-input-fg);
   font-family: var(--chat-font-sans);
-  font-size: 0.875rem;
+  font-size: var(--chat-input-font-size);
+  line-height: 1.5;
   outline: none;
-}
-
-@media (min-width: 640px) {
-  .chat-input-field {
-    font-size: 1rem;
-  }
 }
 
 /* =========================================================
