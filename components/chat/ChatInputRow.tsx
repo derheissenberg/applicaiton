@@ -26,6 +26,20 @@ const TIMING = {
   gap: 150,
 } as const;
 
+function fullPlaceholder(index: number): string {
+  return SHARED_PREFIX + ROTATING_SUFFIXES[index];
+}
+
+function startFirstRotationTyping(): Phase {
+  return {
+    tag: "rotation-typing",
+    index: 0,
+    suffix: ROTATING_SUFFIXES[0],
+    typed: 0,
+    fromEmpty: true,
+  };
+}
+
 // ─── Module-level session state (strict-mode safe — never set in cleanup) ─────
 
 let greetingShownThisSession = false;
@@ -35,9 +49,15 @@ let greetingShownThisSession = false;
 type Phase =
   | { tag: "greeting-static" }
   | { tag: "greeting-deleting"; chars: string }
-  | { tag: "rotation-typing"; index: number; suffix: string; typed: number }
+  | {
+      tag: "rotation-typing";
+      index: number;
+      suffix: string;
+      typed: number;
+      fromEmpty: boolean;
+    }
   | { tag: "rotation-holding"; index: number }
-  | { tag: "rotation-deleting"; index: number; chars: string };
+  | { tag: "rotation-deleting"; index: number; text: string };
 
 // ─── Hook ─────────────────────────────────────────────────────────────────────
 
@@ -53,12 +73,12 @@ function useHeroPlaceholderTypewriter(paused: boolean): { currentText: string } 
     ) {
       return REDUCED_MOTION_TEXT;
     }
-    return greetingShownThisSession ? SHARED_PREFIX : GREETING;
+    return greetingShownThisSession ? "" : GREETING;
   });
 
   const phaseRef = useRef<Phase>(
     greetingShownThisSession
-      ? { tag: "rotation-typing", index: 0, suffix: ROTATING_SUFFIXES[0], typed: 0 }
+      ? startFirstRotationTyping()
       : { tag: "greeting-static" }
   );
   const pausedRef = useRef(paused);
@@ -102,24 +122,31 @@ function useHeroPlaceholderTypewriter(paused: boolean): { currentText: string } 
             schedule(TIMING.delete);
           } else {
             greetingShownThisSession = true;
-            setCurrentText(SHARED_PREFIX);
-            phaseRef.current = {
-              tag: "rotation-typing",
-              index: 0,
-              suffix: ROTATING_SUFFIXES[0],
-              typed: 0,
-            };
+            setCurrentText("");
+            phaseRef.current = startFirstRotationTyping();
             schedule(TIMING.gap);
           }
           break;
         }
 
         case "rotation-typing": {
-          const { index, suffix, typed } = phase;
+          const { index, suffix, typed, fromEmpty } = phase;
           const newTyped = typed + 1;
-          setCurrentText(SHARED_PREFIX + suffix.slice(0, newTyped));
-          if (newTyped < suffix.length) {
-            phaseRef.current = { tag: "rotation-typing", index, suffix, typed: newTyped };
+          const nextText = fromEmpty
+            ? fullPlaceholder(index).slice(0, newTyped)
+            : SHARED_PREFIX + suffix.slice(0, newTyped);
+          const targetLength = fromEmpty
+            ? fullPlaceholder(index).length
+            : suffix.length;
+          setCurrentText(nextText);
+          if (newTyped < targetLength) {
+            phaseRef.current = {
+              tag: "rotation-typing",
+              index,
+              suffix,
+              typed: newTyped,
+              fromEmpty,
+            };
             schedule(TIMING.type);
           } else {
             phaseRef.current = { tag: "rotation-holding", index };
@@ -133,18 +160,18 @@ function useHeroPlaceholderTypewriter(paused: boolean): { currentText: string } 
           phaseRef.current = {
             tag: "rotation-deleting",
             index,
-            chars: ROTATING_SUFFIXES[index],
+            text: fullPlaceholder(index),
           };
           schedule(TIMING.delete);
           break;
         }
 
         case "rotation-deleting": {
-          const { index, chars } = phase;
-          const next = chars.slice(0, -1);
-          setCurrentText(SHARED_PREFIX + next);
-          if (next.length > 0) {
-            phaseRef.current = { tag: "rotation-deleting", index, chars: next };
+          const { index, text } = phase;
+          const next = text.slice(0, -1);
+          setCurrentText(next);
+          if (next.length > SHARED_PREFIX.length) {
+            phaseRef.current = { tag: "rotation-deleting", index, text: next };
             schedule(TIMING.delete);
           } else {
             const nextIndex = (index + 1) % ROTATING_SUFFIXES.length;
@@ -153,7 +180,9 @@ function useHeroPlaceholderTypewriter(paused: boolean): { currentText: string } 
               index: nextIndex,
               suffix: ROTATING_SUFFIXES[nextIndex],
               typed: 0,
+              fromEmpty: false,
             };
+            setCurrentText(SHARED_PREFIX);
             schedule(TIMING.gap);
           }
           break;
@@ -197,22 +226,17 @@ function useHeroPlaceholderTypewriter(paused: boolean): { currentText: string } 
     const phase = phaseRef.current;
 
     if (phase.tag === "greeting-static" || phase.tag === "greeting-deleting") {
-      // Smart restart: skip greeting, jump directly to rotation
+      // Smart restart: skip greeting, type first placeholder from empty
       greetingShownThisSession = true;
-      setCurrentText(SHARED_PREFIX);
-      phaseRef.current = {
-        tag: "rotation-typing",
-        index: 0,
-        suffix: ROTATING_SUFFIXES[0],
-        typed: 0,
-      };
+      setCurrentText("");
+      phaseRef.current = startFirstRotationTyping();
       scheduleRef.current(TIMING.gap);
     } else if (phase.tag === "rotation-holding") {
       // Was paused mid-hold: skip remaining hold, go straight to deleting
       phaseRef.current = {
         tag: "rotation-deleting",
         index: phase.index,
-        chars: ROTATING_SUFFIXES[phase.index],
+        text: fullPlaceholder(phase.index),
       };
       scheduleRef.current(TIMING.delete);
     } else {
