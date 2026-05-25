@@ -14,7 +14,7 @@ type ChatInputRowProps = {
   inputRef?: React.RefObject<HTMLInputElement | null>;
 };
 
-import { Button, SendIcon } from "@/components/ui/Button";
+import { SendIcon } from "@/components/ui/Button";
 
 export function ChatInputRow({
   input,
@@ -40,11 +40,11 @@ export function ChatInputRow({
     <div
       className={`mx-auto w-full max-w-[var(--chat-input-max-width)] text-left ${className ?? "mt-9"}`}
     >
-      <div className="flex w-full items-center gap-2">
+      <div className="flex w-full items-center gap-[0.625rem]">
         <div className="chat-input-shell relative">
           {showRotatingPlaceholder && !input && (
             <span
-              className={`pointer-events-none absolute top-1/2 -translate-y-1/2 truncate text-left font-outfit transition-opacity duration-300 ease-out ${
+              className={`pointer-events-none absolute top-1/2 z-[1] -translate-y-1/2 truncate text-left font-outfit transition-opacity duration-300 ease-out ${
                 placeholderVisible ? "opacity-100" : "opacity-0"
               }`}
               style={{
@@ -70,15 +70,15 @@ export function ChatInputRow({
             className="chat-input-field text-left"
           />
         </div>
-        <Button
-          variant="icon"
+        <button
           type="button"
           aria-label="Send message"
           disabled={sendDisabled}
           onClick={onSend}
+          className="chat-send-btn inline-flex items-center justify-center"
         >
           <SendIcon />
-        </Button>
+        </button>
       </div>
     </div>
   );
