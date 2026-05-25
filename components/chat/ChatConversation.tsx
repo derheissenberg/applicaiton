@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import type { UIMessage } from "ai";
 import { formatChatErrorMessage } from "@/lib/chat-errors";
 import { ChatInputRow } from "./ChatInputRow";
@@ -38,7 +38,7 @@ export function ChatConversation({
   isEntering,
   assistantLabel = "Assistant",
 }: ChatConversationProps) {
-  const streamRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
@@ -48,7 +48,7 @@ export function ChatConversation({
     (status === "streaming" && lastAssistant !== undefined && !lastAssistantText);
 
   useEffect(() => {
-    streamRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, lastAssistantText, showStreamingDots]);
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export function ChatConversation({
       </button>
 
       {/* Scroll stream */}
-      <div className="chat-stream" ref={streamRef} role="log" aria-live="polite" aria-label="Chat messages">
+      <div className="chat-stream" role="log" aria-live="polite" aria-label="Chat messages">
         <div className="chat-column">
           {messages.map((message, index) => {
             const delay = 0.24 + index * 0.07;
@@ -121,6 +121,8 @@ export function ChatConversation({
               </p>
             </div>
           )}
+
+          <div ref={messagesEndRef} aria-hidden className="h-0 w-full shrink-0" />
         </div>
       </div>
 
