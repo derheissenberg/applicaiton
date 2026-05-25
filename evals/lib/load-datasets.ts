@@ -15,6 +15,7 @@ const DATASET_FILES = [
   "persona_adherence.json",
   "boundary_testing.json",
   "factual_accuracy.json",
+  "company_context.json",
 ];
 
 export interface LoadedDatasets {

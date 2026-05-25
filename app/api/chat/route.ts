@@ -7,6 +7,11 @@ import {
 } from "ai";
 import { after } from "next/server";
 import { buildSystemPrompt } from "@/lib/prompt";
+import {
+  matchContext,
+  buildContextBlock,
+  type ContextEntry,
+} from "@/lib/context-loader";
 import { ratelimit, getClientIp } from "@/lib/ratelimit";
 import { observe, setActiveTraceIO } from "@langfuse/tracing";
 import { trace } from "@opentelemetry/api";
@@ -129,20 +134,34 @@ async function handler(req: Request) {
         ? sessionId
         : crypto.randomUUID();
 
-    const lastUserMessage = validatedMessages
+    const userTexts = validatedMessages
       .filter((m) => m.role === "user")
-      .pop();
-    const lastUserText =
-      lastUserMessage?.parts
-        ?.filter((p) => p.type === "text")
-        ?.map((p) => p.text)
-        ?.join("") ?? "";
+      .map(
+        (m) =>
+          m.parts
+            ?.filter((p) => p.type === "text")
+            ?.map((p) => p.text)
+            ?.join("") ?? ""
+      );
+    const lastUserText = userTexts[userTexts.length - 1] ?? "";
 
     setActiveTraceIO({ input: lastUserText });
 
     trace.getActiveSpan()?.setAttribute("session.id", validSessionId);
 
     const system = await buildSystemPrompt();
+    let matched: ContextEntry | null = null;
+    try {
+      matched = await matchContext(userTexts);
+    } catch (err) {
+      console.error("[api/chat] context loader failed:", err);
+    }
+    const contextBlock = matched ? "\n\n" + buildContextBlock(matched) : "";
+    const systemWithContext = matched ? system + contextBlock : system;
+
+    if (matched?.slug) {
+      trace.getActiveSpan()?.setAttribute("context.loaded", matched.slug);
+    }
 
     // #region agent log
     void debugLog({
@@ -155,7 +174,7 @@ async function handler(req: Request) {
 
     const result = streamText({
       model: anthropic(process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5"),
-      system,
+      system: systemWithContext,
       messages: await convertToModelMessages(validatedMessages),
       maxRetries: 4,
       experimental_telemetry: {
