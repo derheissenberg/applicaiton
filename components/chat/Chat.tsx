@@ -6,7 +6,6 @@ import { DefaultChatTransport } from "ai";
 import { ChatHero } from "./ChatHero";
 import { ChatConversation } from "./ChatConversation";
 import { useBodyScrollLock } from "./useBodyScrollLock";
-import { useOverflowDiagnostic } from "./useOverflowDiagnostic";
 import "./chat-theme.css";
 
 export type ChatProps = {
@@ -40,8 +39,6 @@ export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: Cha
 
   const isStreaming = status === "streaming" || status === "submitted";
   const sendDisabled = !input.trim() || isStreaming;
-
-  useOverflowDiagnostic();
 
   // Rotating placeholder effect (only in hero mode)
   useEffect(() => {
