@@ -8,27 +8,11 @@ import {
 } from "@/components/ui/typography";
 import { ChatInputRow } from "./ChatInputRow";
 
-const GREETING_PLACEHOLDER = "Aloha! You can ask me anything about Stefan…";
-
-const ROTATING_PLACEHOLDERS = [
-  "Ask about Stefan's fit for your company…",
-  "Ask about Stefan's professional experience…",
-  "Ask about Stefan's startup background…",
-  "Ask about Stefan's experience with AI…",
-  "Ask about Stefan's fit for your corporate culture…",
-  "Ask about Stefan's enterprise experience…",
-];
-
 type ChatHeroProps = {
   input: string;
   onInputChange: (value: string) => void;
   onSend: () => void;
   sendDisabled: boolean;
-  rotatingIndex: number;
-  placeholderVisible: boolean;
-  showGreetingPlaceholder: boolean;
-  onFocus: () => void;
-  onBlur: () => void;
   isHidden: boolean;
 };
 
@@ -37,17 +21,8 @@ export function ChatHero({
   onInputChange,
   onSend,
   sendDisabled,
-  rotatingIndex,
-  placeholderVisible,
-  showGreetingPlaceholder,
-  onFocus,
-  onBlur,
   isHidden,
 }: ChatHeroProps) {
-  const placeholderText = showGreetingPlaceholder
-    ? GREETING_PLACEHOLDER
-    : ROTATING_PLACEHOLDERS[rotatingIndex];
-
   return (
     <div
       className={cn(
@@ -109,10 +84,6 @@ export function ChatHero({
           onSend={onSend}
           sendDisabled={sendDisabled}
           showRotatingPlaceholder
-          placeholderText={placeholderText}
-          placeholderVisible={placeholderVisible}
-          onFocus={onFocus}
-          onBlur={onBlur}
         />
       </div>
     </div>

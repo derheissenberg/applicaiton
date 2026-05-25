@@ -21,12 +21,8 @@ export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: Cha
   const [heroHidden, setHeroHidden] = useState(false);
   const [conversationEntering, setConversationEntering] = useState(false);
 
-  // Input and placeholder states
+  // Input state
   const [input, setInput] = useState("");
-  const [showGreetingPlaceholder, setShowGreetingPlaceholder] = useState(true);
-  const [rotatingIndex, setRotatingIndex] = useState(0);
-  const [placeholderVisible, setPlaceholderVisible] = useState(true);
-  const [inputFocused, setInputFocused] = useState(false);
 
   // Session for chat
   const sessionIdRef = useRef(crypto.randomUUID());
@@ -39,28 +35,6 @@ export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: Cha
 
   const isStreaming = status === "streaming" || status === "submitted";
   const sendDisabled = !input.trim() || isStreaming;
-
-  // Rotating placeholder effect (only in hero mode)
-  useEffect(() => {
-    if (mode !== "hero" || inputFocused || input.length > 0) return;
-
-    const interval = setInterval(() => {
-      setPlaceholderVisible(false);
-      setTimeout(() => {
-        setShowGreetingPlaceholder((showGreeting) => {
-          if (showGreeting) {
-            setRotatingIndex(0);
-            return false;
-          }
-          setRotatingIndex((i) => (i + 1) % 6);
-          return showGreeting;
-        });
-        setPlaceholderVisible(true);
-      }, 300);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [mode, inputFocused, input]);
 
   // ESC key handler for conversation mode
   useEffect(() => {
@@ -114,16 +88,11 @@ export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: Cha
     // Start exit animation
     setConversationEntering(false);
 
-    // Wait for exit animation to complete (280ms per Lovable), then reset
-    // useBodyScrollLock cleans up when locked becomes false via useEffect cleanup
-    // NOT coupled to this setTimeout
+    // Wait for exit animation to complete (280ms), then reset
     setTimeout(() => {
       setMode("hero");
       setHeroHidden(false);
       setInput("");
-      setShowGreetingPlaceholder(true);
-      setRotatingIndex(0);
-      setPlaceholderVisible(true);
 
       // Clear messages and generate new session
       setMessages([]);
@@ -139,11 +108,6 @@ export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: Cha
           onInputChange={setInput}
           onSend={handleSend}
           sendDisabled={sendDisabled}
-          rotatingIndex={rotatingIndex}
-          placeholderVisible={placeholderVisible}
-          showGreetingPlaceholder={showGreetingPlaceholder}
-          onFocus={() => setInputFocused(true)}
-          onBlur={() => setInputFocused(false)}
           isHidden={heroHidden}
         />
       )}
