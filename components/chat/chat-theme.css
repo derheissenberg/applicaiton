@@ -6,6 +6,10 @@
 .chat-root {
   --chat-keyboard-offset: 0px;
   --chat-scroll-at-bottom-threshold: 8px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
 }
 
 @media (max-width: 767px) {
@@ -227,6 +231,8 @@
 .chat-conversation-surface {
   position: fixed;
   inset: 0;
+  width: 100%;
+  max-width: 100%;
   z-index: var(--chat-overlay-z);
   background-color: var(--chat-page-bg);
   font-family: var(--chat-font-sans);
@@ -236,11 +242,11 @@
   overflow: hidden;
 }
 
-/* Vignette layer - subtle radial gradients */
+/* Vignette layer - subtle radial gradients (inset 0: avoids iOS horizontal scroll from -10% bleed) */
 .chat-conversation-surface::before {
   content: "";
   position: absolute;
-  inset: -10%;
+  inset: 0;
   pointer-events: none;
   background:
     radial-gradient(
@@ -263,9 +269,9 @@
 }
 
 @keyframes chat-gradient-drift {
-  0%   { transform: translate3d(0, 0, 0) scale(1); }
-  50%  { transform: translate3d(2%, -1.5%, 0) scale(1.04); }
-  100% { transform: translate3d(-1.5%, 2%, 0) scale(1.02); }
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(1%, -1%, 0); }
+  100% { transform: translate3d(-1%, 1%, 0); }
 }
 
 /* Grain layer - opacity controlled by theme */
@@ -287,6 +293,8 @@
 .chat-stream {
   position: relative;
   flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: oklch(1 0 0 / 0.1) transparent;
@@ -301,7 +309,10 @@
 }
 
 .chat-column {
+  width: 100%;
   max-width: var(--chat-conversation-max-width);
+  min-width: 0;
+  box-sizing: border-box;
   margin: 0 auto;
   padding: 5rem 1.5rem 8rem;
   display: flex;
@@ -315,6 +326,7 @@
 .chat-row {
   display: flex;
   width: 100%;
+  min-width: 0;
 }
 
 .chat-row.user { justify-content: flex-end; }
@@ -343,6 +355,7 @@
 /* Updated: uses CSS variables for border */
 .chat-bubble-user-bordered {
   max-width: 85%;
+  min-width: 0;
   border-radius: var(--chat-bubble-radius);
   background: var(--chat-bubble-user-bg);
   color: var(--chat-bubble-user-fg);
@@ -351,6 +364,8 @@
   line-height: 1.6;
   font-size: 0.9375rem;
   font-weight: 400;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .chat-bubble-assistant {
@@ -365,6 +380,7 @@
 /* Updated: transparent background, no border padding */
 .chat-bubble-assistant-clean {
   max-width: 100%;
+  min-width: 0;
   border-radius: var(--chat-bubble-radius);
   background: transparent;
   color: var(--chat-bubble-assistant-fg);
@@ -373,6 +389,8 @@
   line-height: 1.6;
   font-size: 0.9375rem;
   font-weight: 400;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 /* =========================================================
@@ -449,6 +467,7 @@
 .chat-input-shell {
   position: relative;
   isolation: isolate;
+  box-sizing: border-box;
   display: flex;
   min-height: var(--chat-input-min-height);
   min-width: 0;
@@ -635,11 +654,26 @@
 }
 
 .chat-dock-inner {
+  width: 100%;
+  min-width: 0;
   max-width: var(--chat-input-max-width);
   margin: 0 auto;
   display: flex;
   align-items: flex-end;
   gap: 0.625rem;
+  box-sizing: border-box;
+}
+
+/* Input row wrapper + flex row (ChatInputRow) — constrain to viewport */
+.chat-dock-inner > div {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.chat-dock-inner > div > div {
+  min-width: 0;
 }
 
 /* =========================================================
@@ -793,6 +827,22 @@
    ========================================================= */
 .chat-hero-min-height {
   min-height: var(--chat-hero-min-height-mobile);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: clip;
+}
+
+@media (max-width: 767px) {
+  .chat-root .chat-hero-min-height h2 {
+    font-size: clamp(1.625rem, 8.2vw, 2.375rem);
+    overflow-wrap: anywhere;
+  }
+
+  .chat-root .chat-hero-min-height h2 .chat-accent-text {
+    max-width: 100%;
+  }
 }
 
 @media (min-width: 768px) {
