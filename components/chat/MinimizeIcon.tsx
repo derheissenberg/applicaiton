@@ -11,10 +11,10 @@ export function MinimizeIcon({ className }: { className?: string }) {
       className={className ?? "h-[18px] w-[18px]"}
       aria-hidden
     >
-      <path d="M8 3v3a2 2 0 0 1-2 2H3" />
-      <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
-      <path d="M3 16h3a2 2 0 0 1 2 2v3" />
-      <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
+      <path d="m14 10 7-7" />
+      <path d="M20 10h-6V4" />
+      <path d="m3 21 7-7" />
+      <path d="M4 14h6v6" />
     </svg>
   );
 }

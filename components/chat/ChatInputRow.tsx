@@ -44,10 +44,15 @@ export function ChatInputRow({
         <div className="chat-input-shell relative">
           {showRotatingPlaceholder && !input && (
             <span
-              className={`pointer-events-none absolute left-4 right-4 top-1/2 -translate-y-1/2 truncate text-left font-outfit text-sm transition-opacity duration-300 ease-out sm:text-base ${
+              className={`pointer-events-none absolute top-1/2 -translate-y-1/2 truncate text-left font-outfit transition-opacity duration-300 ease-out ${
                 placeholderVisible ? "opacity-100" : "opacity-0"
               }`}
-              style={{ color: "var(--chat-input-placeholder-fg)" }}
+              style={{
+                color: "var(--chat-input-placeholder-fg)",
+                left: "var(--chat-input-padding-x)",
+                right: "var(--chat-input-padding-x)",
+                fontSize: "var(--chat-input-font-size)",
+              }}
               aria-hidden
             >
               {placeholderText}
