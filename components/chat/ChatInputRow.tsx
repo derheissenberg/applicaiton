@@ -11,6 +11,7 @@ type ChatInputRowProps = {
   onFocus: () => void;
   onBlur: () => void;
   className?: string;
+  inputRef?: React.RefObject<HTMLInputElement | null>;
 };
 
 import { Button, SendIcon } from "@/components/ui/Button";
@@ -26,6 +27,7 @@ export function ChatInputRow({
   onFocus,
   onBlur,
   className,
+  inputRef,
 }: ChatInputRowProps) {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -52,6 +54,7 @@ export function ChatInputRow({
             </span>
           )}
           <input
+            ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => onInputChange(e.target.value)}

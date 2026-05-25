@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { UIMessage } from "ai";
 import { formatChatErrorMessage } from "@/lib/chat-errors";
 import { ChatInputRow } from "./ChatInputRow";
-import { CloseIcon } from "./CloseIcon";
+import { MinimizeIcon } from "./MinimizeIcon";
 
 function getMessageText(message: UIMessage): string {
   return message.parts
@@ -23,6 +23,7 @@ type ChatConversationProps = {
   status: string;
   error: Error | null | undefined;
   isEntering: boolean;
+  assistantLabel?: string;
 };
 
 export function ChatConversation({
@@ -35,8 +36,10 @@ export function ChatConversation({
   status,
   error,
   isEntering,
+  assistantLabel = "Assistant",
 }: ChatConversationProps) {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const streamRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
   const lastAssistantText = lastAssistant ? getMessageText(lastAssistant) : "";
@@ -45,98 +48,98 @@ export function ChatConversation({
     (status === "streaming" && lastAssistant !== undefined && !lastAssistantText);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    streamRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, lastAssistantText, showStreamingDots]);
+
+  useEffect(() => {
+    // Focus input on mount
+    inputRef.current?.focus();
+  }, []);
 
   return (
     <div
-      className="fixed inset-0 z-[var(--chat-overlay-z)] flex h-[100dvh] flex-col bg-[var(--chat-page-bg)] chat-conversation-overlay"
+      className="chat-conversation-surface chat-conversation-overlay"
       data-entering={isEntering}
       role="dialog"
       aria-modal="true"
       aria-label="Chat conversation"
     >
-      {/* Inner column - max-width centered */}
-      <div className="mx-auto flex h-full w-full max-w-[var(--chat-conversation-max-width)] flex-col px-4 sm:px-5">
-        {/* Header with close button - 44x44 tap target on mobile */}
-        <header className="flex shrink-0 items-center justify-end py-3">
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close chat"
-            className="chat-close-btn flex h-11 w-11 items-center justify-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:h-10 sm:w-10"
-          >
-            <CloseIcon className="h-6 w-6" />
-          </button>
-        </header>
+      {/* Close button - Minimize2 style per Lovable */}
+      <button
+        type="button"
+        aria-label="Close conversation"
+        className="chat-close-surface"
+        onClick={onClose}
+      >
+        <MinimizeIcon />
+      </button>
 
-        {/* Messages scroll area with bottom padding for sticky input */}
-        <div
-          className="flex flex-1 flex-col gap-3 overflow-y-auto pb-24 pt-2"
-          role="log"
-          aria-live="polite"
-          aria-label="Chat messages"
-        >
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={
-                message.role === "user" ? "flex justify-end" : "flex justify-start"
-              }
-            >
+      {/* Scroll stream */}
+      <div className="chat-stream" ref={streamRef} role="log" aria-live="polite" aria-label="Chat messages">
+        <div className="chat-column">
+          {messages.map((message, index) => {
+            const delay = 0.24 + index * 0.07;
+            return (
               <div
-                className={
-                  message.role === "user"
-                    ? "chat-bubble-user"
-                    : "chat-bubble-assistant"
-                }
+                key={message.id}
+                className={`chat-row ${message.role} chat-message-enter`}
+                style={{ animationDelay: `${delay}s` }}
               >
-                <p
-                  className="whitespace-pre-wrap text-base"
-                  style={{ fontFamily: "var(--chat-font-sans)" }}
-                >
-                  {getMessageText(message)}
-                </p>
+                {message.role === "assistant" ? (
+                  <div className="chat-assistant-block">
+                    <div className="chat-meta">{assistantLabel}</div>
+                    <div className="chat-bubble-assistant-clean">
+                      {getMessageText(message).split("\n\n").map((para, idx) => (
+                        <p key={idx}>{para}</p>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="chat-bubble-user-bordered">{getMessageText(message)}</div>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {showStreamingDots && (
-            <div className="flex justify-start">
-              <div className="chat-bubble-assistant">
-                <span className="inline-flex gap-1" aria-hidden>
-                  <span className="animate-pulse">.</span>
-                  <span className="animate-pulse [animation-delay:150ms]">.</span>
-                  <span className="animate-pulse [animation-delay:300ms]">.</span>
-                </span>
+            <div className="chat-row assistant chat-message-enter" style={{ animationDelay: `${0.24 + messages.length * 0.07}s` }}>
+              <div className="chat-assistant-block">
+                <div className="chat-meta">{assistantLabel}</div>
+                <div className="chat-typing" aria-label="Assistant is typing">
+                  <span />
+                  <span />
+                  <span />
+                </div>
               </div>
             </div>
           )}
 
           {error && (
-            <p className="chat-error-text" role="alert">
-              {formatChatErrorMessage(error)}
-            </p>
+            <div className="chat-row">
+              <p className="chat-error-text" role="alert">
+                {formatChatErrorMessage(error)}
+              </p>
+            </div>
           )}
-
-          <div ref={messagesEndRef} />
         </div>
+      </div>
 
-        {/* Sticky input bar at bottom */}
-        <footer className="sticky bottom-0 w-full shrink-0 border-t border-[var(--chat-input-border)]/30 bg-[var(--chat-page-bg)] py-3 sm:py-4">
+      {/* Sticky dock at bottom */}
+      <div className="chat-dock">
+        <div className="chat-dock-inner">
           <ChatInputRow
             input={input}
             onInputChange={onInputChange}
             onSend={onSend}
             sendDisabled={sendDisabled}
             showRotatingPlaceholder={false}
-            placeholderText=""
+            placeholderText="Ask anything…"
             placeholderVisible
             onFocus={() => {}}
             onBlur={() => {}}
-            className="mt-0"
+            inputRef={inputRef}
           />
-        </footer>
+        </div>
       </div>
     </div>
   );

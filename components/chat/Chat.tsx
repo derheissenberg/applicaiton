@@ -10,16 +10,17 @@ import "./chat-theme.css";
 
 export type ChatProps = {
   theme?: "dark-tokyo" | "stefan-portfolio";
+  assistantLabel?: string;
 };
 
-export function Chat({ theme = "dark-tokyo" }: ChatProps) {
+export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: ChatProps) {
   // Mode state: "hero" | "conversation"
   const [mode, setMode] = useState<"hero" | "conversation">("hero");
-  
+
   // Animation states
   const [heroHidden, setHeroHidden] = useState(false);
   const [conversationEntering, setConversationEntering] = useState(false);
-  
+
   // Input and placeholder states
   const [input, setInput] = useState("");
   const [showGreetingPlaceholder, setShowGreetingPlaceholder] = useState(true);
@@ -86,14 +87,14 @@ export function Chat({ theme = "dark-tokyo" }: ChatProps) {
     if (mode === "hero") {
       // Start exit animation for hero
       setHeroHidden(true);
-      
+
       // Small delay to allow hero exit animation to start
       // Then switch to conversation with enter animation
       setTimeout(() => {
         setMode("conversation");
         // Start conversation with entering=false (will animate in)
         setConversationEntering(false);
-        
+
         // Trigger enter animation after mount
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
@@ -113,7 +114,9 @@ export function Chat({ theme = "dark-tokyo" }: ChatProps) {
     // Start exit animation
     setConversationEntering(false);
 
-    // Wait for exit animation to complete, then reset
+    // Wait for exit animation to complete (280ms per Lovable), then reset
+    // useBodyScrollLock cleans up when locked becomes false via useEffect cleanup
+    // NOT coupled to this setTimeout
     setTimeout(() => {
       setMode("hero");
       setHeroHidden(false);
@@ -121,12 +124,12 @@ export function Chat({ theme = "dark-tokyo" }: ChatProps) {
       setShowGreetingPlaceholder(true);
       setRotatingIndex(0);
       setPlaceholderVisible(true);
-      
+
       // Clear messages and generate new session
       setMessages([]);
       sessionIdRef.current = crypto.randomUUID();
-    }, 200);
-  }, [mode]);
+    }, 280);
+  }, [mode, setMessages]);
 
   return (
     <div className="chat-root w-full" data-theme={theme}>
@@ -156,6 +159,7 @@ export function Chat({ theme = "dark-tokyo" }: ChatProps) {
           status={status}
           error={error}
           isEntering={conversationEntering}
+          assistantLabel={assistantLabel}
         />
       )}
     </div>
