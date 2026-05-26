@@ -1,5 +1,6 @@
 "use client";
 
+import type { RefObject } from "react";
 import { cn } from "@/lib/utils";
 import {
   HeroDescription,
@@ -16,6 +17,7 @@ type ChatHeroProps = {
   isHidden: boolean;
   onInputFocus?: () => void;
   onInputBlur?: () => void;
+  inputRef?: RefObject<HTMLInputElement | null>;
 };
 
 export function ChatHero({
@@ -26,6 +28,7 @@ export function ChatHero({
   isHidden,
   onInputFocus,
   onInputBlur,
+  inputRef,
 }: ChatHeroProps) {
   return (
     <div
@@ -90,6 +93,7 @@ export function ChatHero({
           showRotatingPlaceholder
           onFocus={onInputFocus}
           onBlur={onInputBlur}
+          inputRef={inputRef}
         />
       </div>
     </div>

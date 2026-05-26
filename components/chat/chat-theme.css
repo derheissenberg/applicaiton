@@ -844,6 +844,11 @@
   min-width: 0;
   box-sizing: border-box;
   overflow-x: clip;
+  scroll-padding-bottom: 1rem;
+}
+
+.chat-hero-min-height .chat-input-field {
+  scroll-margin-bottom: 12px;
 }
 
 @media (max-width: 767px) {

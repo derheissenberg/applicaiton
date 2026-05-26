@@ -6,7 +6,7 @@ import { DefaultChatTransport } from "ai";
 import { ChatHero } from "./ChatHero";
 import { ChatConversation } from "./ChatConversation";
 import { useBodyScrollLock } from "./useBodyScrollLock";
-import { useIosInputFocusScrollGuard } from "./useIosInputFocusScrollGuard";
+import { useHeroInputKeyboardAlign } from "./useHeroInputKeyboardAlign";
 import "./chat-theme.css";
 
 export type ChatProps = {
@@ -28,6 +28,7 @@ export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: Cha
 
   // Session for chat
   const sessionIdRef = useRef(crypto.randomUUID());
+  const heroInputRef = useRef<HTMLInputElement>(null);
 
   const { messages, sendMessage, setMessages, status, error } = useChat({
     transport: new DefaultChatTransport({
@@ -56,8 +57,8 @@ export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: Cha
   // Body scroll lock when in conversation
   useBodyScrollLock(mode === "conversation");
 
-  // Hero: block iOS scroll-into-view burst after tap (short window only)
-  useIosInputFocusScrollGuard(mode === "hero" && heroInputFocused);
+  // Hero: keep input above iOS keyboard within the visual viewport
+  useHeroInputKeyboardAlign(mode === "hero" && heroInputFocused, heroInputRef);
 
   const handleSend = useCallback(() => {
     const text = input.trim();
@@ -116,6 +117,7 @@ export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: Cha
           isHidden={heroHidden}
           onInputFocus={() => setHeroInputFocused(true)}
           onInputBlur={() => setHeroInputFocused(false)}
+          inputRef={heroInputRef}
         />
       )}
 
