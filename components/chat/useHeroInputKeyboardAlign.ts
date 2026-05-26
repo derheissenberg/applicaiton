@@ -8,6 +8,10 @@ const TITLE_TOP_SAFE_PX = 12;
 /**
  * While the hero input is focused, keep it inside the visual viewport above the
  * iOS keyboard — without pinning scrollY (which leaves the input under the keyboard).
+ *
+ * Uses CSS translateY on [data-hero-content] instead of window.scrollTo because the
+ * page layout (html/body/main all min-height:100vh) is never taller than the layout
+ * viewport, so maxScrollY === 0 and window.scrollTo() is a no-op on iOS.
  */
 export function useHeroInputKeyboardAlign(
   active: boolean,
@@ -25,12 +29,26 @@ export function useHeroInputKeyboardAlign(
     scrollYAtFocusRef.current = window.scrollY;
     let rafId: number | null = null;
 
+    const getContentEl = () =>
+      input.closest<HTMLElement>("[data-hero-content]");
+
+    const resetTransform = () => {
+      const el = getContentEl();
+      if (el) el.style.transform = "";
+    };
+
     const align = () => {
       if (rafId !== null) {
         cancelAnimationFrame(rafId);
       }
       rafId = requestAnimationFrame(() => {
         rafId = null;
+
+        const contentEl = getContentEl();
+        // Reset any prior transform so getBoundingClientRect measures the true
+        // (unshifted) layout position — avoids accumulated-delta errors across
+        // successive vv.resize events during keyboard animation.
+        if (contentEl) contentEl.style.transform = "";
 
         const inputRect = input.getBoundingClientRect();
         const visibleBottom = vv.offsetTop + vv.height - INPUT_GAP_PX;
@@ -55,10 +73,11 @@ export function useHeroInputKeyboardAlign(
               inputBottom: inputRect.bottom,
               visibleBottom,
               overflow,
+              hasContentEl: !!contentEl,
             },
             timestamp: Date.now(),
-            hypothesisId: "A",
-            runId: "pre-fix",
+            hypothesisId: "B",
+            runId: "post-fix",
           }),
         }).catch(() => {});
         // #endregion
@@ -77,8 +96,13 @@ export function useHeroInputKeyboardAlign(
 
         if (delta <= 0) return;
 
-        const nextScrollY = window.scrollY + delta;
-        window.scrollTo(0, nextScrollY);
+        if (contentEl) {
+          contentEl.style.transform = `translateY(-${delta}px)`;
+        } else {
+          // Fallback: window.scrollTo works on desktop/Android where the
+          // page can actually scroll.
+          window.scrollTo(0, window.scrollY + delta);
+        }
 
         // #region agent log
         fetch("http://127.0.0.1:7336/ingest/d59e9ced-9d47-44ed-8229-0f50553ae11f", {
@@ -90,11 +114,11 @@ export function useHeroInputKeyboardAlign(
           body: JSON.stringify({
             sessionId: "7e412f",
             location: "useHeroInputKeyboardAlign.ts:scroll",
-            message: "hero scrollBy for keyboard",
-            data: { delta, nextScrollY },
+            message: "hero translateY for keyboard",
+            data: { delta, hasContentEl: !!contentEl },
             timestamp: Date.now(),
-            hypothesisId: "A",
-            runId: "pre-fix",
+            hypothesisId: "B",
+            runId: "post-fix",
           }),
         }).catch(() => {});
         // #endregion
@@ -111,6 +135,7 @@ export function useHeroInputKeyboardAlign(
       if (rafId !== null) {
         cancelAnimationFrame(rafId);
       }
+      resetTransform();
     };
   }, [active, inputRef]);
 }

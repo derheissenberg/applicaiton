@@ -53,7 +53,7 @@ export function ChatHero({
         aria-hidden="true"
         className="chat-portrait chat-portrait-overlay pointer-events-none"
       />
-      <div className="relative z-10 mx-auto w-full max-w-[var(--chat-hero-max-width)] text-center">
+      <div className="relative z-10 mx-auto w-full max-w-[var(--chat-hero-max-width)] text-center" data-hero-content="">
         {/* Pass theme colors via style/class overrides */}
         <Kicker
           className="text-[var(--chat-hero-kicker-fg)]"
