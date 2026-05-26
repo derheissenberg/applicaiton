@@ -81,7 +81,7 @@ export function ChatHero({
           style={{ color: "var(--chat-hero-description-fg)" }}
         >
           Fifteen years designing digital products across agencies, consulting,
-          startups, and enterprise. Ask question and find out directly what you
+          startups, and enterprise. Ask questions and find out directly what you
           need to know.
         </HeroDescription>
 
