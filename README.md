@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Chat and themes
+
+Desktop hero height is set by the host page, not by themes. Themes carry visual identity — colors, typography, gradients, portrait. To set the desktop hero height, pass `--chat-hero-min-height-desktop` on a parent element via inline style or CSS. The default is auto (content-fit). Mobile hero height stays theme-controlled via `--chat-hero-min-height-mobile` (default `100dvh` in both shipped themes).
+
 ## Getting Started
 
 First, run the development server:

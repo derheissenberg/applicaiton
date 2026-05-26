@@ -93,8 +93,7 @@
   --chat-overlay-enter-duration: 550ms;
   --chat-overlay-exit-duration: 280ms;
 
-  /* Hero layout */
-  --chat-hero-min-height-desktop: 100dvh;
+  /* Hero layout (mobile only; desktop min-height is host-controlled) */
   --chat-hero-min-height-mobile: 100dvh;
 
   /* Portrait (defaults to none for dark-tokyo) */
@@ -185,8 +184,7 @@
   --chat-overlay-enter-duration: 550ms;
   --chat-overlay-exit-duration: 280ms;
 
-  /* Hero layout */
-  --chat-hero-min-height-desktop: 750px;
+  /* Hero layout (mobile only; desktop min-height is host-controlled) */
   --chat-hero-min-height-mobile: 100dvh;
 
   /* Portrait (defaults to none, override via inline styles) */
@@ -866,7 +864,7 @@
 
 @media (min-width: 768px) {
   .chat-hero-min-height {
-    min-height: var(--chat-hero-min-height-desktop);
+    min-height: var(--chat-hero-min-height-desktop, auto);
   }
 }
 
