@@ -17,10 +17,11 @@ export function useVisualViewportOffset(
 
     const updateOffset = () => {
       const offset = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-      if (offset !== lastOffsetRef.current) {
-        lastOffsetRef.current = offset;
-        target.style.setProperty("--chat-keyboard-offset", `${offset}px`);
-      }
+      lastOffsetRef.current = offset;
+      target.style.setProperty("--chat-keyboard-offset", `${offset}px`);
+      target.style.setProperty("--chat-vv-width", `${vv.width}px`);
+      target.style.setProperty("--chat-vv-offset-left", `${vv.offsetLeft}px`);
+      target.style.setProperty("--chat-vv-height", `${vv.height}px`);
     };
 
     const handleViewportChange = () => {
@@ -42,8 +43,10 @@ export function useVisualViewportOffset(
       if (rafIdRef.current !== null) {
         cancelAnimationFrame(rafIdRef.current);
       }
-      // Reset to 0 on cleanup
-      target.style.setProperty("--chat-keyboard-offset", "0px");
+      target.style.removeProperty("--chat-keyboard-offset");
+      target.style.removeProperty("--chat-vv-width");
+      target.style.removeProperty("--chat-vv-offset-left");
+      target.style.removeProperty("--chat-vv-height");
     };
   }, [targetRef]);
 }

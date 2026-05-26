@@ -230,8 +230,10 @@
    ========================================================= */
 .chat-conversation-surface {
   position: fixed;
-  inset: 0;
-  width: 100%;
+  top: 0;
+  left: var(--chat-vv-offset-left, 0);
+  width: var(--chat-vv-width, 100%);
+  height: var(--chat-vv-height, 100%);
   max-width: 100%;
   z-index: var(--chat-overlay-z);
   background-color: var(--chat-page-bg);
@@ -296,6 +298,7 @@
   min-width: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   scrollbar-width: thin;
   scrollbar-color: oklch(1 0 0 / 0.1) transparent;
 }
@@ -310,7 +313,7 @@
 
 .chat-column {
   width: 100%;
-  max-width: var(--chat-conversation-max-width);
+  max-width: min(var(--chat-conversation-max-width), 100%);
   min-width: 0;
   box-sizing: border-box;
   margin: 0 auto;
@@ -391,6 +394,14 @@
   font-weight: 400;
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+.chat-bubble-assistant-clean :is(p, strong, em, code) {
+  color: inherit;
+}
+
+.chat-bubble-user-bordered :is(p, strong, em, code) {
+  color: inherit;
 }
 
 /* =========================================================
@@ -656,7 +667,7 @@
 .chat-dock-inner {
   width: 100%;
   min-width: 0;
-  max-width: var(--chat-input-max-width);
+  max-width: min(var(--chat-input-max-width), 100%);
   margin: 0 auto;
   display: flex;
   align-items: flex-end;
@@ -764,6 +775,8 @@
    Overlay Transitions
    ========================================================= */
 .chat-conversation-overlay {
+  overscroll-behavior: contain;
+  touch-action: pan-y;
   transition:
     opacity var(--chat-overlay-exit-duration) cubic-bezier(0.4, 0, 0.6, 1),
     transform var(--chat-overlay-exit-duration) cubic-bezier(0.4, 0, 0.6, 1);
