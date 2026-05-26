@@ -54,34 +54,6 @@ export function useHeroInputKeyboardAlign(
         const visibleBottom = vv.offsetTop + vv.height - INPUT_GAP_PX;
         const overflow = inputRect.bottom - visibleBottom;
 
-        // #region agent log
-        fetch("http://127.0.0.1:7336/ingest/d59e9ced-9d47-44ed-8229-0f50553ae11f", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Debug-Session-Id": "7e412f",
-          },
-          body: JSON.stringify({
-            sessionId: "7e412f",
-            location: "useHeroInputKeyboardAlign.ts:align",
-            message: "hero keyboard align",
-            data: {
-              scrollY: window.scrollY,
-              scrollYAtFocus: scrollYAtFocusRef.current,
-              vvHeight: vv.height,
-              vvOffsetTop: vv.offsetTop,
-              inputBottom: inputRect.bottom,
-              visibleBottom,
-              overflow,
-              hasContentEl: !!contentEl,
-            },
-            timestamp: Date.now(),
-            hypothesisId: "B",
-            runId: "post-fix",
-          }),
-        }).catch(() => {});
-        // #endregion
-
         if (overflow <= 0) return;
 
         let delta = overflow;
@@ -103,25 +75,6 @@ export function useHeroInputKeyboardAlign(
           // page can actually scroll.
           window.scrollTo(0, window.scrollY + delta);
         }
-
-        // #region agent log
-        fetch("http://127.0.0.1:7336/ingest/d59e9ced-9d47-44ed-8229-0f50553ae11f", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Debug-Session-Id": "7e412f",
-          },
-          body: JSON.stringify({
-            sessionId: "7e412f",
-            location: "useHeroInputKeyboardAlign.ts:scroll",
-            message: "hero translateY for keyboard",
-            data: { delta, hasContentEl: !!contentEl },
-            timestamp: Date.now(),
-            hypothesisId: "B",
-            runId: "post-fix",
-          }),
-        }).catch(() => {});
-        // #endregion
       });
     };
 

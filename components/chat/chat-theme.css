@@ -45,7 +45,8 @@
   --chat-input-radius: 10px;
   --chat-input-padding-y: 0.875rem;
   --chat-input-padding-x: 1.125rem;
-  --chat-input-font-size: 0.9375rem;
+  /* 16px minimum — prevents iOS Safari auto-zoom on input focus */
+  --chat-input-font-size: 1rem;
   --chat-input-min-height: 52px;
   --chat-input-transition-duration: 180ms;
 
@@ -134,7 +135,8 @@
   --chat-input-radius: 0.875rem;
   --chat-input-padding-y: 0.875rem;
   --chat-input-padding-x: 1.125rem;
-  --chat-input-font-size: 0.9375rem;
+  /* 16px minimum — prevents iOS Safari auto-zoom on input focus */
+  --chat-input-font-size: 1rem;
   --chat-input-min-height: 52px;
   --chat-input-transition-duration: 180ms;
 
