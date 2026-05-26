@@ -14,6 +14,8 @@ type ChatHeroProps = {
   onSend: () => void;
   sendDisabled: boolean;
   isHidden: boolean;
+  onInputFocus?: () => void;
+  onInputBlur?: () => void;
 };
 
 export function ChatHero({
@@ -22,6 +24,8 @@ export function ChatHero({
   onSend,
   sendDisabled,
   isHidden,
+  onInputFocus,
+  onInputBlur,
 }: ChatHeroProps) {
   return (
     <div
@@ -84,6 +88,8 @@ export function ChatHero({
           onSend={onSend}
           sendDisabled={sendDisabled}
           showRotatingPlaceholder
+          onFocus={onInputFocus}
+          onBlur={onInputBlur}
         />
       </div>
     </div>

@@ -4,7 +4,6 @@
    Chat Root Variables (mobile scroll polish)
    ========================================================= */
 .chat-root {
-  --chat-keyboard-offset: 0px;
   --chat-scroll-at-bottom-threshold: 8px;
   width: 100%;
   max-width: 100%;
@@ -230,7 +229,7 @@
    ========================================================= */
 .chat-conversation-surface {
   position: fixed;
-  top: 0;
+  top: var(--chat-vv-offset-top, 0);
   left: var(--chat-vv-offset-left, 0);
   width: var(--chat-vv-width, 100%);
   height: var(--chat-vv-height, 100%);
@@ -603,7 +602,7 @@
 .chat-dock {
   position: relative;
   flex: 0 0 auto;
-  padding: 1rem 1.5rem calc(1.75rem + var(--chat-keyboard-offset, 0px));
+  padding: 1rem 1.5rem calc(1.75rem + env(safe-area-inset-bottom, 0px));
   background: linear-gradient(
     to top,
     var(--chat-page-bg) 60%,
