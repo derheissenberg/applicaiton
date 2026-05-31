@@ -1,7 +1,7 @@
 /* ============================================================
    applicaiton-docs.css — documentation section styles
    ALL rules scoped under .applicaiton-docs
-   Uses shared tokens from page-themes.css (--bg, --fg, --muted, --acc-*, etc.)
+   Uses shared tokens from page-themes.css (--app-bg, --app-fg, --app-muted, --acc-*, etc.)
    Fonts: --font-outfit / --font-kode-mono (no Google Fonts import)
    ============================================================ */
 
@@ -25,8 +25,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 90% 30% at 50% 0%, var(--bg-tint-b, rgba(59, 130, 246, 0.022)), transparent 60%),
-    radial-gradient(ellipse 70% 40% at 50% 100%, var(--bg-tint-a, rgba(34, 211, 238, 0.018)), transparent 60%);
+    radial-gradient(ellipse 90% 30% at 50% 0%, var(--app-bg-tint-b, rgba(59, 130, 246, 0.022)), transparent 60%),
+    radial-gradient(ellipse 70% 40% at 50% 100%, var(--app-bg-tint-a, rgba(34, 211, 238, 0.018)), transparent 60%);
   pointer-events: none;
 }
 
@@ -49,13 +49,13 @@
   font-size: 12px;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--muted, rgba(255, 255, 255, 0.6));
+  color: var(--app-muted, rgba(255, 255, 255, 0.6));
 }
 
-.applicaiton-docs .kicker .dot { color: var(--acc-solid, #38bdf8); opacity: 0.9; }
+.applicaiton-docs .kicker .dot { color: var(--app-acc-solid, #38bdf8); opacity: 0.9; }
 
 .applicaiton-docs .grad-text {
-  background-image: var(--grad-accent, linear-gradient(100deg, #22d3ee, #3b82f6, #22d3ee));
+  background-image: var(--app-grad-accent, linear-gradient(100deg, #22d3ee, #3b82f6, #22d3ee));
   background-size: 250% auto;
   background-position: 0% 50%;
   -webkit-background-clip: text;
@@ -73,14 +73,14 @@
 .applicaiton-docs .hairline {
   height: 1px;
   border: 0;
-  background: linear-gradient(90deg, transparent, var(--rule-strong, rgba(255,255,255,0.14)) 18%, var(--rule-strong, rgba(255,255,255,0.14)) 82%, transparent);
+  background: linear-gradient(90deg, transparent, var(--app-rule-strong, rgba(255,255,255,0.14)) 18%, var(--app-rule-strong, rgba(255,255,255,0.14)) 82%, transparent);
 }
 
 .applicaiton-docs .grad-rule {
   height: 1px;
   width: 64px;
   border-radius: 2px;
-  background: var(--grad-accent, linear-gradient(100deg, #22d3ee, #3b82f6, #22d3ee));
+  background: var(--app-grad-accent, linear-gradient(100deg, #22d3ee, #3b82f6, #22d3ee));
   background-size: 200% auto;
   animation: docs-grad-shift 7s ease infinite;
 }
@@ -113,12 +113,12 @@
   line-height: 1.08;
   letter-spacing: -0.02em;
   margin: 14px 0 0;
-  color: var(--fg, #fff);
+  color: var(--app-fg, #fff);
 }
 .applicaiton-docs .block-head h2 b { font-weight: 600; }
 .applicaiton-docs .block-head p {
   margin: 18px 0 0;
-  color: var(--muted, rgba(255, 255, 255, 0.6));
+  color: var(--app-muted, rgba(255, 255, 255, 0.6));
   font-size: clamp(15px, 1.5vw, 17px);
   max-width: 56ch;
 }
@@ -135,24 +135,24 @@
   letter-spacing: -0.03em;
   margin: 28px 0 0;
   text-wrap: balance;
-  color: var(--fg, #fff);
+  color: var(--app-fg, #fff);
 }
 .applicaiton-docs .statement h2 b { font-weight: 600; }
 .applicaiton-docs .statement .lead {
   margin: 26px 0 0;
   font-size: clamp(17px, 2vw, 22px);
   font-weight: 200;
-  color: var(--muted-2, rgba(255, 255, 255, 0.72));
+  color: var(--app-muted-2, rgba(255, 255, 255, 0.72));
   max-width: 46ch;
   line-height: 1.4;
 }
 .applicaiton-docs .statement .body {
   margin: 30px 0 0;
-  color: var(--muted, rgba(255, 255, 255, 0.6));
+  color: var(--app-muted, rgba(255, 255, 255, 0.6));
   font-size: 16px;
   max-width: 60ch;
 }
-.applicaiton-docs .statement .body b { color: var(--fg, #fff); font-weight: 600; }
+.applicaiton-docs .statement .body b { color: var(--app-fg, #fff); font-weight: 600; }
 
 /* ============================================================
    Block 2 — five-up fork grid
@@ -168,16 +168,16 @@
   display: flex;
   flex-direction: column;
   padding: 24px 22px 26px;
-  border: 1px solid var(--rule, rgba(255,255,255,0.08));
+  border: 1px solid var(--app-rule, rgba(255,255,255,0.08));
   border-radius: 14px;
-  background: var(--surface, oklch(0.22 0 0));
+  background: var(--app-surface, oklch(0.22 0 0));
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, background 0.35s ease;
 }
 
 .applicaiton-docs .fork-card:hover {
   transform: translateY(-4px);
-  border-color: var(--rule-strong, rgba(255,255,255,0.14));
-  background: var(--surface-2, rgba(255,255,255,0.06));
+  border-color: var(--app-rule-strong, rgba(255,255,255,0.14));
+  background: var(--app-surface-2, rgba(255,255,255,0.06));
 }
 
 .applicaiton-docs .fork-card .num {
@@ -186,7 +186,7 @@
   font-size: 30px;
   letter-spacing: -0.02em;
   line-height: 1;
-  background-image: var(--grad-accent, linear-gradient(100deg, #22d3ee, #3b82f6, #22d3ee));
+  background-image: var(--app-grad-accent, linear-gradient(100deg, #22d3ee, #3b82f6, #22d3ee));
   background-size: 250% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -202,7 +202,7 @@
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--muted-2, rgba(255,255,255,0.72));
+  color: var(--app-muted-2, rgba(255,255,255,0.72));
 }
 
 .applicaiton-docs .fork-card .claim {
@@ -211,14 +211,14 @@
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.25;
-  color: var(--fg, #fff);
+  color: var(--app-fg, #fff);
 }
 
 .applicaiton-docs .fork-card .sub {
   margin-top: 12px;
   font-size: 13.5px;
   line-height: 1.55;
-  color: var(--muted, rgba(255,255,255,0.6));
+  color: var(--app-muted, rgba(255,255,255,0.6));
 }
 
 .applicaiton-docs .inline-code {
@@ -227,7 +227,7 @@
   padding: 1px 5px;
   border-radius: 5px;
   background: rgba(255, 255, 255, 0.05);
-  color: var(--fg, #fff);
+  color: var(--app-fg, #fff);
   white-space: nowrap;
 }
 
@@ -250,9 +250,9 @@
   flex-direction: column;
   gap: 9px;
   padding: 20px 18px;
-  border: 1px solid var(--rule, rgba(255,255,255,0.08));
+  border: 1px solid var(--app-rule, rgba(255,255,255,0.08));
   border-radius: 13px;
-  background: var(--surface, oklch(0.22 0 0));
+  background: var(--app-surface, oklch(0.22 0 0));
 }
 
 .applicaiton-docs .node .n-label {
@@ -261,14 +261,14 @@
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--acc-solid, #38bdf8);
+  color: var(--app-acc-solid, #38bdf8);
 }
 
 .applicaiton-docs .node .n-title {
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--fg, #fff);
+  color: var(--app-fg, #fff);
 }
 
 .applicaiton-docs .node .n-title code {
@@ -282,7 +282,7 @@
 .applicaiton-docs .node .n-sub {
   font-size: 12.5px;
   line-height: 1.5;
-  color: var(--muted, rgba(255,255,255,0.6));
+  color: var(--app-muted, rgba(255,255,255,0.6));
 }
 
 .applicaiton-docs .conn {
@@ -292,7 +292,7 @@
   align-items: center;
   justify-content: center;
   width: 34px;
-  color: var(--acc-solid, #38bdf8);
+  color: var(--app-acc-solid, #38bdf8);
 }
 .applicaiton-docs .conn svg { width: 22px; height: 22px; opacity: 0.85; }
 
@@ -300,10 +300,10 @@
   flex: 2.6 1 0;
   min-width: 0;
   position: relative;
-  border: 1px dashed var(--rule-strong, rgba(255,255,255,0.14));
+  border: 1px dashed var(--app-rule-strong, rgba(255,255,255,0.14));
   border-radius: 16px;
   padding: 34px 18px 18px;
-  background: linear-gradient(180deg, var(--acc-glow, rgba(34,211,238,0.04)), rgba(255,255,255,0.01));
+  background: linear-gradient(180deg, var(--app-acc-glow, rgba(34,211,238,0.04)), rgba(255,255,255,0.01));
 }
 
 .applicaiton-docs .route-panel__tag {
@@ -314,14 +314,14 @@
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--muted, rgba(255,255,255,0.6));
-  background: var(--bg, #080808);
+  color: var(--app-muted, rgba(255,255,255,0.6));
+  background: var(--app-bg, #080808);
   padding: 2px 10px;
-  border: 1px solid var(--rule, rgba(255,255,255,0.08));
+  border: 1px solid var(--app-rule, rgba(255,255,255,0.08));
   border-radius: 999px;
 }
 
-.applicaiton-docs .route-panel__tag b { color: var(--acc-solid, #38bdf8); font-weight: 600; }
+.applicaiton-docs .route-panel__tag b { color: var(--app-acc-solid, #38bdf8); font-weight: 600; }
 
 .applicaiton-docs .route-inner {
   display: grid;
@@ -337,7 +337,7 @@
   height: 2px;
   margin-top: 22px;
   border-radius: 2px;
-  background: var(--rule, rgba(255,255,255,0.08));
+  background: var(--app-rule, rgba(255,255,255,0.08));
   overflow: hidden;
 }
 
@@ -347,7 +347,7 @@
   inset: 0;
   transform: scaleX(0);
   transform-origin: left;
-  background: var(--grad-accent, linear-gradient(100deg, #22d3ee, #3b82f6, #22d3ee));
+  background: var(--app-grad-accent, linear-gradient(100deg, #22d3ee, #3b82f6, #22d3ee));
   background-size: 200% auto;
   transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
   animation: docs-grad-shift 7s ease infinite;
@@ -363,7 +363,7 @@
   font-size: 10.5px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--muted-2, rgba(255,255,255,0.72));
+  color: var(--app-muted-2, rgba(255,255,255,0.72));
 }
 
 /* ============================================================
@@ -390,7 +390,7 @@
   position: absolute;
   left: 9px; top: 6px; bottom: 6px;
   width: 1px;
-  background: linear-gradient(var(--acc-from, #22d3ee), var(--acc-mid, #3b82f6), transparent);
+  background: linear-gradient(var(--app-acc-from, #22d3ee), var(--app-acc-mid, #3b82f6), transparent);
   opacity: 0.5;
 }
 
@@ -402,13 +402,13 @@
   left: -30px; top: 2px;
   width: 19px; height: 19px;
   border-radius: 999px;
-  border: 1px solid var(--rule-strong, rgba(255,255,255,0.14));
-  background: var(--bg, #080808);
+  border: 1px solid var(--app-rule-strong, rgba(255,255,255,0.14));
+  background: var(--app-bg, #080808);
   display: flex; align-items: center; justify-content: center;
   font-family: var(--font-kode-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 10px;
   font-weight: 700;
-  color: var(--acc-solid, #38bdf8);
+  color: var(--app-acc-solid, #38bdf8);
 }
 
 .applicaiton-docs .step h3 {
@@ -416,14 +416,14 @@
   font-size: 17px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--fg, #fff);
+  color: var(--app-fg, #fff);
 }
 
 .applicaiton-docs .step p {
   margin: 8px 0 0;
   font-size: 14px;
   line-height: 1.55;
-  color: var(--muted, rgba(255,255,255,0.6));
+  color: var(--app-muted, rgba(255,255,255,0.6));
 }
 
 .applicaiton-docs .step p code {
@@ -432,7 +432,7 @@
   padding: 1px 5px;
   border-radius: 5px;
   background: rgba(255, 255, 255, 0.05);
-  color: var(--fg, #fff);
+  color: var(--app-fg, #fff);
   white-space: nowrap;
 }
 
@@ -440,8 +440,8 @@
   margin-top: 10px;
   font-size: 12.5px;
   line-height: 1.5;
-  color: var(--muted-2, rgba(255,255,255,0.72));
-  border-left: 1px solid var(--rule-strong, rgba(255,255,255,0.14));
+  color: var(--app-muted-2, rgba(255,255,255,0.72));
+  border-left: 1px solid var(--app-rule-strong, rgba(255,255,255,0.14));
   padding-left: 12px;
 }
 
@@ -452,7 +452,7 @@
 }
 
 .applicaiton-docs .code-card {
-  border: 1px solid var(--rule, rgba(255,255,255,0.08));
+  border: 1px solid var(--app-rule, rgba(255,255,255,0.08));
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.015);
   overflow: hidden;
@@ -463,21 +463,21 @@
   align-items: center;
   gap: 10px;
   padding: 13px 16px;
-  border-bottom: 1px solid var(--rule, rgba(255,255,255,0.08));
+  border-bottom: 1px solid var(--app-rule, rgba(255,255,255,0.08));
 }
 
 .applicaiton-docs .code-top .dots { display: flex; gap: 7px; }
 .applicaiton-docs .code-top .dots i {
   width: 10px; height: 10px;
   border-radius: 999px;
-  background: var(--rule-strong, rgba(255,255,255,0.14));
+  background: var(--app-rule-strong, rgba(255,255,255,0.14));
   display: block;
 }
 
 .applicaiton-docs .code-top .fname {
   font-family: var(--font-kode-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px;
-  color: var(--muted, rgba(255,255,255,0.6));
+  color: var(--app-muted, rgba(255,255,255,0.6));
   letter-spacing: 0.02em;
 }
 
@@ -490,9 +490,9 @@
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted, rgba(255,255,255,0.6));
+  color: var(--app-muted, rgba(255,255,255,0.6));
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--rule, rgba(255,255,255,0.08));
+  border: 1px solid var(--app-rule, rgba(255,255,255,0.08));
   border-radius: 8px;
   padding: 6px 11px;
   cursor: pointer;
@@ -500,14 +500,14 @@
 }
 
 .applicaiton-docs .copy-btn:hover {
-  color: var(--fg, #fff);
-  border-color: var(--rule-strong, rgba(255,255,255,0.14));
+  color: var(--app-fg, #fff);
+  border-color: var(--app-rule-strong, rgba(255,255,255,0.14));
   background: rgba(255, 255, 255, 0.07);
 }
 
 .applicaiton-docs .copy-btn.copied {
-  color: var(--acc-solid, #38bdf8);
-  border-color: var(--acc-solid, #38bdf8);
+  color: var(--app-acc-solid, #38bdf8);
+  border-color: var(--app-acc-solid, #38bdf8);
 }
 
 .applicaiton-docs .copy-btn svg { width: 13px; height: 13px; }
@@ -527,10 +527,10 @@
 .applicaiton-docs .tok-kw { color: #7dd3fc; }
 .applicaiton-docs .tok-fn { color: #c4b5fd; }
 .applicaiton-docs .tok-str { color: #6ee7b7; }
-.applicaiton-docs .tok-tag { color: var(--acc-solid, #38bdf8); }
+.applicaiton-docs .tok-tag { color: var(--app-acc-solid, #38bdf8); }
 .applicaiton-docs .tok-attr { color: #c4b5fd; }
-.applicaiton-docs .tok-punc { color: var(--muted, rgba(255,255,255,0.6)); }
-.applicaiton-docs .tok-com { color: var(--muted-2, rgba(255,255,255,0.72)); font-style: italic; }
+.applicaiton-docs .tok-punc { color: var(--app-muted, rgba(255,255,255,0.6)); }
+.applicaiton-docs .tok-com { color: var(--app-muted-2, rgba(255,255,255,0.72)); font-style: italic; }
 
 /* ============================================================
    Block 5 — credibility tiles
@@ -546,16 +546,16 @@
   position: relative;
   overflow: hidden;
   padding: 28px 26px 30px;
-  border: 1px solid var(--rule, rgba(255,255,255,0.08));
+  border: 1px solid var(--app-rule, rgba(255,255,255,0.08));
   border-radius: 16px;
   background:
-    radial-gradient(ellipse 120% 90% at 0% 0%, var(--acc-glow, rgba(34,211,238,0.05)), transparent 55%),
-    var(--surface, oklch(0.22 0 0));
+    radial-gradient(ellipse 120% 90% at 0% 0%, var(--app-acc-glow, rgba(34,211,238,0.05)), transparent 55%),
+    var(--app-surface, oklch(0.22 0 0));
   transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .applicaiton-docs .tile:hover {
-  border-color: var(--rule-strong, rgba(255,255,255,0.14));
+  border-color: var(--app-rule-strong, rgba(255,255,255,0.14));
   transform: translateY(-3px);
 }
 
@@ -565,7 +565,7 @@
   font-size: clamp(30px, 4vw, 42px);
   line-height: 1;
   letter-spacing: -0.02em;
-  background-image: var(--grad-accent, linear-gradient(100deg, #22d3ee, #3b82f6, #22d3ee));
+  background-image: var(--app-grad-accent, linear-gradient(100deg, #22d3ee, #3b82f6, #22d3ee));
   background-size: 250% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -576,8 +576,8 @@
 
 .applicaiton-docs .tile .metric .sm {
   font-size: 0.55em;
-  color: var(--muted, rgba(255,255,255,0.6));
-  -webkit-text-fill-color: var(--muted, rgba(255,255,255,0.6));
+  color: var(--app-muted, rgba(255,255,255,0.6));
+  -webkit-text-fill-color: var(--app-muted, rgba(255,255,255,0.6));
 }
 
 .applicaiton-docs .tile .t-label {
@@ -585,14 +585,14 @@
   font-size: 17px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--fg, #fff);
+  color: var(--app-fg, #fff);
 }
 
 .applicaiton-docs .tile .t-gloss {
   margin-top: 9px;
   font-size: 13.5px;
   line-height: 1.55;
-  color: var(--muted, rgba(255,255,255,0.6));
+  color: var(--app-muted, rgba(255,255,255,0.6));
 }
 
 /* ============================================================
@@ -602,18 +602,18 @@
   margin-top: var(--docs-block-gap);
   text-align: center;
   padding: clamp(48px, 7vw, 88px) var(--docs-pad);
-  border-top: 1px solid var(--rule, rgba(255,255,255,0.08));
+  border-top: 1px solid var(--app-rule, rgba(255,255,255,0.08));
 }
 
 .applicaiton-docs .closing .credit {
   max-width: 620px;
   margin: 0 auto;
   padding: 26px 30px;
-  border: 1px solid var(--rule, rgba(255,255,255,0.08));
+  border: 1px solid var(--app-rule, rgba(255,255,255,0.08));
   border-radius: 16px;
   background:
-    radial-gradient(ellipse 120% 100% at 50% 0%, var(--acc-glow, rgba(34,211,238,0.06)), transparent 60%),
-    var(--surface, oklch(0.22 0 0));
+    radial-gradient(ellipse 120% 100% at 50% 0%, var(--app-acc-glow, rgba(34,211,238,0.06)), transparent 60%),
+    var(--app-surface, oklch(0.22 0 0));
 }
 
 .applicaiton-docs .closing .credit .kicker {
@@ -627,14 +627,14 @@
   font-size: clamp(16px, 1.8vw, 19px);
   font-weight: 200;
   line-height: 1.45;
-  color: var(--muted-2, rgba(255,255,255,0.72));
+  color: var(--app-muted-2, rgba(255,255,255,0.72));
 }
 
-.applicaiton-docs .closing .credit p b { font-weight: 600; color: var(--fg, #fff); }
+.applicaiton-docs .closing .credit p b { font-weight: 600; color: var(--app-fg, #fff); }
 
 .applicaiton-docs .closing .credit a.inline {
-  color: var(--acc-solid, #38bdf8);
-  border-bottom: 1px solid var(--acc-glow, rgba(34,211,238,0.35));
+  color: var(--app-acc-solid, #38bdf8);
+  border-bottom: 1px solid var(--app-acc-glow, rgba(34,211,238,0.35));
 }
 
 .applicaiton-docs .closing .meta {
@@ -643,7 +643,7 @@
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--muted-2, rgba(255,255,255,0.72));
+  color: var(--app-muted-2, rgba(255,255,255,0.72));
 }
 
 .applicaiton-docs .closing .cta-row {
@@ -674,8 +674,8 @@
 .applicaiton-docs .btn svg { width: 17px; height: 17px; }
 
 .applicaiton-docs .btn-primary {
-  color: var(--on-accent, #04121e);
-  background-image: linear-gradient(110deg, var(--acc-from, #22d3ee), var(--acc-mid, #3b82f6), var(--acc-to, #22d3ee));
+  color: var(--app-on-accent, #04121e);
+  background-image: linear-gradient(110deg, var(--app-acc-from, #22d3ee), var(--app-acc-mid, #3b82f6), var(--app-acc-to, #22d3ee));
   background-size: 200% auto;
   animation: docs-grad-shift 7s ease infinite;
   box-shadow: 0 10px 30px -12px rgba(59, 130, 246, 0.6);
@@ -684,14 +684,14 @@
 .applicaiton-docs .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.07); }
 
 .applicaiton-docs .btn-ghost {
-  color: var(--fg, #fff);
+  color: var(--app-fg, #fff);
   background: transparent;
-  border: 1px solid var(--rule-strong, rgba(255,255,255,0.14));
+  border: 1px solid var(--app-rule-strong, rgba(255,255,255,0.14));
 }
 
 .applicaiton-docs .btn-ghost:hover {
-  border-color: var(--acc-solid, #38bdf8);
-  background: var(--acc-glow, rgba(34,211,238,0.06));
+  border-color: var(--app-acc-solid, #38bdf8);
+  background: var(--app-acc-glow, rgba(34,211,238,0.06));
 }
 
 /* ============================================================

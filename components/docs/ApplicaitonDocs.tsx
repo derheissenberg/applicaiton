@@ -288,7 +288,7 @@ export function ApplicaitonDocs() {
                 <span className="dot">2</span>
                 <h3>Set your environment</h3>
                 <p><code>ANTHROPIC_API_KEY</code>, Upstash Redis URL + token, Langfuse keys.</p>
-                <p className="note">Env vars must <b style={{ color: "var(--fg)" }}>not</b> be wrapped in quotes — Next.js fails open silently if they are.</p>
+                <p className="note">Env vars must <b style={{ color: "var(--app-fg)" }}>not</b> be wrapped in quotes — Next.js fails open silently if they are.</p>
               </li>
               <li className="step">
                 <span className="dot">3</span>
