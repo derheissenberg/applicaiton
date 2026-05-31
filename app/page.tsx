@@ -1,12 +1,20 @@
 import { Chat } from "@/components/chat/Chat";
+import { ApplicaitonDocs } from "@/components/docs/ApplicaitonDocs";
+import "@/styles/page-themes.css";
 
 export default function Home() {
   return (
     <main
-      className="flex min-h-screen flex-col bg-[var(--background)]"
-      style={{ ["--chat-hero-min-height-desktop" as string]: "100dvh" }}
+      className="applicaiton-page flex min-h-screen flex-col"
+      data-theme="dark-tokyo"
     >
-      <Chat />
+      <section
+        className="applicaiton-hero-host w-full"
+        style={{ ["--chat-hero-min-height-desktop" as string]: "100dvh" }}
+      >
+        <Chat theme="dark-tokyo" />
+      </section>
+      <ApplicaitonDocs />
     </main>
   );
 }

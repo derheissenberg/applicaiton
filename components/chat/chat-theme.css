@@ -22,25 +22,25 @@
    ========================================================= */
 .chat-root[data-theme="dark-tokyo"] {
   /* Page/Background */
-  --chat-page-bg: var(--background, #080808);
+  --chat-page-bg: var(--bg, #080808);
 
   /* Typography - Hero */
-  --chat-hero-kicker-fg: rgba(255, 255, 255, 0.6);
-  --chat-hero-title-fg: white;
-  --chat-hero-description-fg: rgba(255, 255, 255, 0.72);
+  --chat-hero-kicker-fg: var(--muted, rgba(255, 255, 255, 0.6));
+  --chat-hero-title-fg: var(--fg, white);
+  --chat-hero-description-fg: var(--muted-2, rgba(255, 255, 255, 0.72));
 
   /* Accent Gradient */
-  --chat-accent-gradient-from: #22d3ee;
-  --chat-accent-gradient-mid: #3b82f6;
-  --chat-accent-gradient-to: #22d3ee;
+  --chat-accent-gradient-from: var(--acc-from, #22d3ee);
+  --chat-accent-gradient-mid: var(--acc-mid, #3b82f6);
+  --chat-accent-gradient-to: var(--acc-to, #22d3ee);
 
   /* Input */
-  --chat-input-bg: oklch(0.22 0 0);
+  --chat-input-bg: var(--surface, oklch(0.22 0 0));
   --chat-input-border: rgba(255, 255, 255, 0.2);
   --chat-input-border-focus: rgba(59, 130, 246, 0.55);
-  --chat-input-bg-focus: rgba(255, 255, 255, 0.06);
-  --chat-input-focus-shadow: rgba(34, 211, 238, 0.14);
-  --chat-input-fg: white;
+  --chat-input-bg-focus: var(--surface-2, rgba(255, 255, 255, 0.06));
+  --chat-input-focus-shadow: var(--acc-glow, rgba(34, 211, 238, 0.14));
+  --chat-input-fg: var(--fg, white);
   --chat-input-placeholder-fg: rgba(255, 255, 255, 0.5);
   --chat-input-radius: 10px;
   --chat-input-padding-y: 0.875rem;
@@ -57,26 +57,26 @@
 
   /* Surface (conversation overlay) */
   --chat-surface-bg: #0a0a0a;
-  --chat-surface-edge: rgba(255, 255, 255, 0.04);
+  --chat-surface-edge: var(--rule, rgba(255, 255, 255, 0.04));
 
   /* Bubbles - dark-tokyo uses original values */
   --chat-bubble-user-bg: #171717;
-  --chat-bubble-user-fg: white;
-  --chat-bubble-user-border: rgba(255, 255, 255, 0.06);
+  --chat-bubble-user-fg: var(--fg, white);
+  --chat-bubble-user-border: var(--rule, rgba(255, 255, 255, 0.06));
   --chat-bubble-assistant-bg: transparent;
   --chat-bubble-assistant-fg: rgba(255, 255, 255, 0.85);
-  --chat-bubble-assistant-border: rgba(255, 255, 255, 0.1);
+  --chat-bubble-assistant-border: var(--rule-strong, rgba(255, 255, 255, 0.1));
   --chat-bubble-radius: 16px;
 
   /* Meta */
   --chat-meta-fg: rgba(255, 255, 255, 0.4);
-  --chat-divider: rgba(255, 255, 255, 0.06);
+  --chat-divider: var(--rule, rgba(255, 255, 255, 0.06));
 
   /* Error/Close */
-  --chat-error-fg: rgba(255, 255, 255, 0.8);
-  --chat-close-fg: rgba(255, 255, 255, 0.6);
-  --chat-close-hover-fg: white;
-  --chat-close-hover-bg: rgba(255, 255, 255, 0.06);
+  --chat-error-fg: var(--fg, rgba(255, 255, 255, 0.8));
+  --chat-close-fg: var(--muted, rgba(255, 255, 255, 0.6));
+  --chat-close-hover-fg: var(--fg, white);
+  --chat-close-hover-bg: var(--surface-2, rgba(255, 255, 255, 0.06));
 
   /* Grain overlay */
   --chat-overlay-grain-opacity: 0;
@@ -111,25 +111,25 @@
    ========================================================= */
 .chat-root[data-theme="stefan-portfolio"] {
   /* Page/Background */
-  --chat-page-bg: oklch(0.16 0.005 260);
+  --chat-page-bg: var(--bg, oklch(0.16 0.005 260));
 
   /* Typography - Hero */
-  --chat-hero-kicker-fg: oklch(0.62 0.01 260);
-  --chat-hero-title-fg: oklch(0.985 0 0);
-  --chat-hero-description-fg: oklch(0.7 0.01 260);
+  --chat-hero-kicker-fg: var(--muted, oklch(0.62 0.01 260));
+  --chat-hero-title-fg: var(--fg, oklch(0.985 0 0));
+  --chat-hero-description-fg: var(--muted-2, oklch(0.7 0.01 260));
 
   /* Accent Gradient - Lovable oklch values */
-  --chat-accent-gradient-from: oklch(0.78 0.16 245);
-  --chat-accent-gradient-mid: oklch(0.66 0.2 252);
-  --chat-accent-gradient-to: oklch(0.52 0.22 262);
+  --chat-accent-gradient-from: var(--acc-from, oklch(0.78 0.16 245));
+  --chat-accent-gradient-mid: var(--acc-mid, oklch(0.66 0.2 252));
+  --chat-accent-gradient-to: var(--acc-to, oklch(0.52 0.22 262));
 
   /* Input - Lovable oklch values */
-  --chat-input-bg: oklch(0.2 0.007 260);
+  --chat-input-bg: var(--surface, oklch(0.2 0.007 260));
   --chat-input-border: oklch(1 0 0 / 0.08);
   --chat-input-border-focus: oklch(0.66 0.2 252 / 0.55);
-  --chat-input-bg-focus: oklch(0.21 0.008 260);
-  --chat-input-focus-shadow: oklch(0.66 0.2 252 / 0.1);
-  --chat-input-fg: oklch(0.985 0 0);
+  --chat-input-bg-focus: var(--surface-2, oklch(0.21 0.008 260));
+  --chat-input-focus-shadow: var(--acc-glow, oklch(0.66 0.2 252 / 0.1));
+  --chat-input-fg: var(--fg, oklch(0.985 0 0));
   --chat-input-placeholder-fg: oklch(0.55 0.01 260);
   --chat-input-radius: 0.875rem;
   --chat-input-padding-y: 0.875rem;
@@ -140,34 +140,34 @@
   --chat-input-transition-duration: 180ms;
 
   /* Send button */
-  --chat-send-fg: oklch(0.99 0 0);
+  --chat-send-fg: var(--fg, oklch(0.99 0 0));
   --chat-send-shadow-inset: 0 1px 0 0 oklch(1 0 0 / 0.15);
   --chat-send-shadow: 0 8px 24px -8px oklch(0.66 0.2 252 / 0.6);
 
   /* Surface - Lovable oklch values */
   --chat-surface-bg: oklch(0.185 0.006 260);
-  --chat-surface-edge: oklch(1 0 0 / 0.04);
+  --chat-surface-edge: var(--rule, oklch(1 0 0 / 0.04));
 
   /* Bubbles - Lovable oklch values */
   --chat-bubble-user-bg: oklch(0.245 0.012 260);
-  --chat-bubble-user-fg: oklch(0.985 0 0);
-  --chat-bubble-user-border: oklch(1 0 0 / 0.06);
+  --chat-bubble-user-fg: var(--fg, oklch(0.985 0 0));
+  --chat-bubble-user-border: var(--rule, oklch(1 0 0 / 0.06));
   --chat-bubble-assistant-bg: transparent;
   --chat-bubble-assistant-fg: oklch(0.92 0.005 260);
-  --chat-bubble-assistant-border: oklch(1 0 0 / 0.06);
+  --chat-bubble-assistant-border: var(--rule, oklch(1 0 0 / 0.06));
   --chat-bubble-radius: 1rem;
 
   /* Meta - Lovable oklch values */
   --chat-meta-fg: oklch(0.5 0.01 260);
-  --chat-divider: oklch(1 0 0 / 0.06);
+  --chat-divider: var(--rule, oklch(1 0 0 / 0.06));
 
   /* Error - Lovable oklch values */
   --chat-error-fg: oklch(0.7 0.18 25);
 
   /* Close - Lovable oklch values */
-  --chat-close-fg: oklch(0.55 0.01 260);
-  --chat-close-hover-fg: oklch(0.985 0 0);
-  --chat-close-hover-bg: oklch(1 0 0 / 0.06);
+  --chat-close-fg: var(--muted, oklch(0.55 0.01 260));
+  --chat-close-hover-fg: var(--fg, oklch(0.985 0 0));
+  --chat-close-hover-bg: var(--surface-2, oklch(1 0 0 / 0.06));
 
   /* Grain overlay - Lovable uses 0.035 */
   --chat-overlay-grain-opacity: 0.035;
