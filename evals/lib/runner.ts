@@ -20,6 +20,8 @@
  *    case fails, 0 if all pass. Never exits early on first failure.
  */
 
+import fs from "fs";
+import path from "path";
 import { streamChat } from "./chat-client";
 import { loadDatasets, getCaseCategory } from "./load-datasets";
 import {
@@ -35,7 +37,7 @@ import type {
   AssertionType,
 } from "../types";
 
-const EVAL_DELAY_MS = parseInt(process.env.EVAL_DELAY_MS || "6500", 10);
+const EVAL_DELAY_MS = parseInt(process.env.EVAL_DELAY_MS || "7000", 10);
 const SESSION_ID =
   process.env.EVAL_SESSION_ID || `eval-${Date.now()}`;
 const MAX_HTTP_RETRIES = 3;
@@ -159,9 +161,27 @@ async function runCaseWithRetries(
 }
 
 /**
+ * Write results to file
+ */
+function writeResultsFile(run: EvalRun): void {
+  const resultsDir = path.join(process.cwd(), "evals", "results");
+  fs.mkdirSync(resultsDir, { recursive: true });
+  const filename = path.join(resultsDir, `eval-${run.sessionId}.json`);
+  fs.writeFileSync(filename, JSON.stringify(run, null, 2));
+  console.log(`Results written to: ${filename}`);
+}
+
+/**
  * Run all eval cases
  */
 export async function runEvals(): Promise<EvalRun> {
+  // Validate ANTHROPIC_API_KEY at start
+  const apiKey = process.env.ANTHROPIC_API_KEY?.trim();
+  if (!apiKey) {
+    console.error("Error: ANTHROPIC_API_KEY is required but not set");
+    process.exit(1);
+  }
+
   const startTime = Date.now();
 
   console.log(`\n=== Starting Eval Run ===`);
@@ -217,6 +237,10 @@ export async function runEvals(): Promise<EvalRun> {
     durationMs,
     results,
   };
+
+  // Ensure results directory exists and write results file
+  fs.mkdirSync(path.join(process.cwd(), "evals", "results"), { recursive: true });
+  writeResultsFile(run);
 
   return run;
 }
