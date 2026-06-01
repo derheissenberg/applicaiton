@@ -3,6 +3,7 @@ import {
   streamText,
   convertToModelMessages,
   validateUIMessages,
+  type SystemModelMessage,
   type UIMessage,
 } from "ai";
 import { after } from "next/server";
@@ -134,7 +135,21 @@ async function handler(req: Request) {
         console.error("[api/chat] context loader failed:", err);
       }
       const contextBlock = matched ? "\n\n" + buildContextBlock(matched) : "";
-      const systemWithContext = matched ? system + contextBlock : system;
+
+      const cachedBaseSystem: SystemModelMessage = {
+        role: "system",
+        content: system,
+        providerOptions: {
+          anthropic: {
+            cacheControl: { type: "ephemeral" },
+          },
+        },
+      };
+
+      const systemForModel: SystemModelMessage | SystemModelMessage[] =
+        matched
+          ? [cachedBaseSystem, { role: "system", content: contextBlock }]
+          : cachedBaseSystem;
 
       if (matched?.slug) {
         trace.getActiveSpan()?.setAttribute("context.loaded", matched.slug);
@@ -142,7 +157,7 @@ async function handler(req: Request) {
 
       const result = streamText({
         model: anthropic(process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5"),
-        system: systemWithContext,
+        system: systemForModel,
         messages: await convertToModelMessages(validatedMessages),
         maxRetries: 4,
         experimental_telemetry: {
