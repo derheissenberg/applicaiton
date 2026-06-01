@@ -13,8 +13,12 @@ import {
   type ContextEntry,
 } from "@/lib/context-loader";
 import { ratelimit, getClientIp } from "@/lib/ratelimit";
-import { observe, setActiveTraceIO } from "@langfuse/tracing";
-import { trace } from "@opentelemetry/api";
+import {
+  observe,
+  propagateAttributes,
+  updateActiveObservation,
+} from "@langfuse/tracing";
+import { context, trace } from "@opentelemetry/api";
 import { langfuseSpanProcessor } from "@/instrumentation";
 
 export const runtime = "nodejs";
@@ -114,48 +118,62 @@ async function handler(req: Request) {
       );
     const lastUserText = userTexts[userTexts.length - 1] ?? "";
 
-    setActiveTraceIO({ input: lastUserText });
+    const rootSpanForContext = trace.getActiveSpan();
+    const rootContext = rootSpanForContext
+      ? trace.setSpan(context.active(), rootSpanForContext)
+      : undefined;
 
-    trace.getActiveSpan()?.setAttribute("session.id", validSessionId);
+    return propagateAttributes({ sessionId: validSessionId }, async () => {
+      updateActiveObservation({ input: lastUserText });
 
-    const system = await buildSystemPrompt();
-    let matched: ContextEntry | null = null;
-    try {
-      matched = await matchContext(userTexts);
-    } catch (err) {
-      console.error("[api/chat] context loader failed:", err);
-    }
-    const contextBlock = matched ? "\n\n" + buildContextBlock(matched) : "";
-    const systemWithContext = matched ? system + contextBlock : system;
+      const system = await buildSystemPrompt();
+      let matched: ContextEntry | null = null;
+      try {
+        matched = await matchContext(userTexts);
+      } catch (err) {
+        console.error("[api/chat] context loader failed:", err);
+      }
+      const contextBlock = matched ? "\n\n" + buildContextBlock(matched) : "";
+      const systemWithContext = matched ? system + contextBlock : system;
 
-    if (matched?.slug) {
-      trace.getActiveSpan()?.setAttribute("context.loaded", matched.slug);
-    }
+      if (matched?.slug) {
+        trace.getActiveSpan()?.setAttribute("context.loaded", matched.slug);
+      }
 
-    const result = streamText({
-      model: anthropic(process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5"),
-      system: systemWithContext,
-      messages: await convertToModelMessages(validatedMessages),
-      maxRetries: 4,
-      experimental_telemetry: {
-        isEnabled: true,
-        functionId: "chat-stream",
-      },
-      onFinish: (event) => {
-        setActiveTraceIO({ output: event.text });
-      },
-      onError: (event) => {
-        const errMsg = String(event.error);
-        setActiveTraceIO({ output: errMsg });
-      },
-    });
+      const result = streamText({
+        model: anthropic(process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5"),
+        system: systemWithContext,
+        messages: await convertToModelMessages(validatedMessages),
+        maxRetries: 4,
+        experimental_telemetry: {
+          isEnabled: true,
+          functionId: "chat-stream",
+          recordInputs: true,
+          recordOutputs: true,
+        },
+        onFinish: (event) => {
+          if (rootContext) {
+            context.with(rootContext, () => {
+              updateActiveObservation({ output: event.text });
+            });
+          }
+        },
+        onError: (event) => {
+          if (rootContext) {
+            context.with(rootContext, () => {
+              updateActiveObservation({ output: String(event.error) });
+            });
+          }
+        },
+      });
 
-    return result.toUIMessageStreamResponse({
-      headers: {
-        ...getCorsHeaders(req),
-        "X-RateLimit-Limit": String(limit),
-        "X-RateLimit-Remaining": String(remaining),
-      },
+      return result.toUIMessageStreamResponse({
+        headers: {
+          ...getCorsHeaders(req),
+          "X-RateLimit-Limit": String(limit),
+          "X-RateLimit-Remaining": String(remaining),
+        },
+      });
     });
   } catch (error) {
     const errName = error instanceof Error ? error.name : "UnknownError";
@@ -171,6 +189,8 @@ async function handler(req: Request) {
 export const POST = observe(handler, {
   name: "chat-stream",
   endOnExit: false,
+  captureInput: false,
+  captureOutput: false,
 });
 
 export async function OPTIONS(req: Request) {
