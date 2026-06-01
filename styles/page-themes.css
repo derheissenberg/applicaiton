@@ -47,6 +47,22 @@
   z-index: 1;
 }
 
+/* Conversation mode: hero unmounts but overlay must stay above docs */
+.applicaiton-hero-host.chat-hero-host-conversation {
+  z-index: 100;
+  min-height: var(--chat-hero-min-height-mobile, 100dvh);
+}
+
+@media (min-width: 768px) {
+  .applicaiton-hero-host.chat-hero-host-conversation {
+    min-height: var(--chat-hero-min-height-desktop, 100dvh);
+  }
+}
+
+.chat-root[data-conversation="true"] {
+  min-height: inherit;
+}
+
 .applicaiton-page[data-theme="dark-tokyo"] ::selection {
   background: var(--app-selection-bg);
   color: var(--app-fg);

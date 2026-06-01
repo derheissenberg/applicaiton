@@ -57,6 +57,14 @@ export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: Cha
   // Body scroll lock when in conversation
   useBodyScrollLock(mode === "conversation");
 
+  // Keep hero host above docs + preserve viewport height when hero unmounts
+  useEffect(() => {
+    const host = document.querySelector<HTMLElement>(".applicaiton-hero-host");
+    if (!host) return;
+    host.classList.toggle("chat-hero-host-conversation", mode === "conversation");
+    return () => host.classList.remove("chat-hero-host-conversation");
+  }, [mode]);
+
   // Hero: keep input above iOS keyboard within the visual viewport
   useHeroInputKeyboardAlign(mode === "hero" && heroInputFocused, heroInputRef);
 
@@ -72,15 +80,7 @@ export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: Cha
       // Then switch to conversation with enter animation
       setTimeout(() => {
         setMode("conversation");
-        // Start conversation with entering=false (will animate in)
-        setConversationEntering(false);
-
-        // Trigger enter animation after mount
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            setConversationEntering(true);
-          });
-        });
+        setConversationEntering(true);
       }, 200);
     }
 
@@ -107,7 +107,11 @@ export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: Cha
   }, [mode, setMessages]);
 
   return (
-    <div className="chat-root w-full" data-theme={theme}>
+    <div
+      className="chat-root w-full"
+      data-theme={theme}
+      data-conversation={mode === "conversation" ? "true" : undefined}
+    >
       {mode === "hero" && (
         <ChatHero
           input={input}
