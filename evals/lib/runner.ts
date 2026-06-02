@@ -69,6 +69,7 @@ async function runCaseWithRetries(
         sessionId,
         messages: [
           {
+            id: crypto.randomUUID(),
             role: "user",
             parts: [{ type: "text", text: case_.input }],
           },
@@ -166,7 +167,7 @@ async function runCaseWithRetries(
 function writeResultsFile(run: EvalRun): void {
   const resultsDir = path.join(process.cwd(), "evals", "results");
   fs.mkdirSync(resultsDir, { recursive: true });
-  const filename = path.join(resultsDir, `eval-${run.sessionId}.json`);
+  const filename = path.join(resultsDir, `${run.sessionId}.json`);
   fs.writeFileSync(filename, JSON.stringify(run, null, 2));
   console.log(`Results written to: ${filename}`);
 }

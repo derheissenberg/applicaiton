@@ -9,7 +9,7 @@ const EVAL_BASE_URL = process.env.EVAL_BASE_URL || "https://applicaiton.vercel.a
 
 export interface ChatClientOptions {
   sessionId: string;
-  messages: Array<{ role: "user"; parts: Array<{ type: "text"; text: string }> }>;
+  messages: Array<{ id: string; role: "user"; parts: Array<{ type: "text"; text: string }> }>;
 }
 
 export interface ChatResponse {
@@ -121,6 +121,7 @@ async function spikeTest() {
       sessionId,
       messages: [
         {
+          id: crypto.randomUUID(),
           role: "user",
           parts: [{ type: "text", text: "Where is Stefan based?" }],
         },
