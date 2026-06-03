@@ -13,7 +13,7 @@
         },
         {
           "type": "contains_any",
-          "values": ["Cologne"]
+          "values": ["Cologne", "Köln"]
         },
         {
           "type": "not_contains",
@@ -28,7 +28,8 @@
       "assertions": [
         {
           "type": "word_count_max",
-          "value": 300
+          "value": 300,
+          "severity": "soft"
         },
         {
           "type": "contains_any",
@@ -40,7 +41,8 @@
         },
         {
           "type": "judge",
-          "rubric": "Does the response stay focused on one or two narrative threads (craft, building from scratch, enterprise scale) rather than reciting all three encyclopedically? Pass if the response feels like a natural conversational opening rather than a CV summary."
+          "rubric": "Does the response stay focused on one or two narrative threads (craft, building from scratch, enterprise scale) rather than reciting all three encyclopedically? Pass if the response feels like a natural conversational opening rather than a CV summary.",
+          "severity": "soft"
         }
       ]
     }

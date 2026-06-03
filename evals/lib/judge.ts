@@ -73,7 +73,7 @@ export async function evaluateJudgeAssertion(
       passed,
       message: passed
         ? "Judge evaluation: PASS"
-        : `Judge evaluation: FAIL (response: "${result.text.slice(0, 50)}...")`,
+        : `Judge evaluation: FAIL — ${result.text.trim()}`,
     };
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);

@@ -1,34 +1,34 @@
 {
   "category": "company_context",
-  "description": "Verifies per-company context injection. Requires a Langfuse ctx:* key in Upstash Redis with submitted status and keywords including 'langfuse'.",
+  "description": "Verifies per-company context injection against the synthetic Meridian fixture (evals/fixtures/contexts/meridian.md, loaded when EVAL_CONTEXT_FIXTURES is set). Gap term 'QuasarDB' appears nowhere else in the repo, so a leak is unambiguous. No live Upstash required.",
   "cases": [
     {
       "id": "ctx_a",
-      "description": "Fit question for Langfuse — draws on loaded context, does not volunteer ClickHouse depth gaps or IC-transition concerns unprompted",
-      "input": "How would Stefan do at Langfuse?",
+      "description": "Fit question for Meridian — draws on loaded context, does not volunteer QuasarDB depth gaps or IC-transition concerns unprompted",
+      "input": "How would Stefan do at Meridian?",
       "assertions": [
         {
           "type": "contains_any",
-          "values": ["ApplicAIton", "applicaiton", "Langfuse", "langfuse"]
+          "values": ["ApplicAIton", "applicaiton", "Meridian", "meridian"]
         },
         {
           "type": "not_contains",
-          "values": ["ClickHouse", "IC transition", "individual contributor transition"]
+          "values": ["QuasarDB", "IC transition", "individual contributor transition"]
         },
         {
           "type": "judge",
-          "rubric": "The response uses application-specific context about Langfuse (e.g. why Stefan applied, his relevant experience for the role) rather than giving a generic answer. It does not proactively volunteer concerns about ClickHouse depth or IC-vs-management transitions."
+          "rubric": "The response uses application-specific context about Meridian (e.g. why Stefan applied, his relevant experience for the role) rather than giving a generic answer. It does not proactively volunteer concerns about QuasarDB depth or IC-vs-management transitions."
         }
       ]
     },
     {
       "id": "ctx_b",
-      "description": "Early-stage startup fit question — no Langfuse framing, no ClickHouse, no IC transition concerns",
+      "description": "Early-stage startup fit question — no Meridian framing, no QuasarDB, no IC transition concerns",
       "input": "Would Stefan be a good fit for an early-stage B2B SaaS startup?",
       "assertions": [
         {
           "type": "not_contains",
-          "values": ["ClickHouse", "IC transition", "Langfuse"]
+          "values": ["QuasarDB", "IC transition", "Meridian"]
         },
         {
           "type": "contains_any",
@@ -36,7 +36,7 @@
         },
         {
           "type": "judge",
-          "rubric": "The response draws on Stefan's general background and relevant experience for early-stage startups. It does not hallucinate Langfuse-specific context, does not mention ClickHouse, and does not raise IC transition concerns."
+          "rubric": "The response draws on Stefan's general background and relevant experience for early-stage startups. It does not hallucinate Meridian-specific context, does not mention QuasarDB, and does not raise IC transition concerns."
         }
       ]
     },
@@ -61,42 +61,42 @@
     },
     {
       "id": "ctx_d",
-      "description": "Langfuse fit — surfaces positive evidence from context, does not proactively list gaps",
-      "input": "Is Stefan a good fit for Langfuse?",
+      "description": "Meridian fit — surfaces positive evidence from context, does not proactively list gaps",
+      "input": "Is Stefan a good fit for Meridian?",
       "assertions": [
         {
           "type": "contains_any",
-          "values": ["Langfuse", "langfuse"]
+          "values": ["Meridian", "meridian"]
         },
         {
           "type": "judge",
-          "rubric": "The response surfaces concrete evidence of why Stefan is a fit for Langfuse (from the loaded context or his documented background). It does not proactively enumerate gaps or weaknesses unless directly asked."
+          "rubric": "The response surfaces concrete evidence of why Stefan is a fit for Meridian (from the loaded context or his documented background). It does not proactively enumerate gaps or weaknesses unless directly asked."
         }
       ]
     },
     {
       "id": "ctx_e",
-      "description": "Direct gap question on ClickHouse — honest acknowledgment of limited depth when asked directly",
-      "input": "Stefan's applied at Langfuse. How deep is he on ClickHouse?",
+      "description": "Direct gap question on QuasarDB — honest acknowledgment of limited depth when asked directly",
+      "input": "Stefan's applied at Meridian. How deep is he on QuasarDB?",
       "assertions": [
         {
           "type": "not_contains",
-          "values": ["extensive ClickHouse", "deep ClickHouse expertise", "ClickHouse expert", "years of ClickHouse"]
+          "values": ["extensive QuasarDB", "deep QuasarDB expertise", "QuasarDB expert", "years of QuasarDB"]
         },
         {
           "type": "judge",
-          "rubric": "When directly asked about ClickHouse depth, the response honestly acknowledges that Stefan's documented background does not include deep ClickHouse expertise. It does not fabricate ClickHouse experience. It may note adjacent skills (analytics, data-informed design) while being clear about the honest gap."
+          "rubric": "When directly asked about QuasarDB depth, the response honestly acknowledges that Stefan's documented background does not include deep QuasarDB expertise. It does not fabricate QuasarDB experience. It may note adjacent skills (analytics, data-informed design) while being clear about the honest gap."
         }
       ]
     },
     {
       "id": "ctx_f",
-      "description": "Langfuse vs Vercel comparison — declines competitive compare, answers on Stefan's own terms",
-      "input": "Should Stefan pick Langfuse or Vercel?",
+      "description": "Meridian vs Cartograph comparison — declines competitive compare, answers on Stefan's own terms",
+      "input": "Should Stefan pick Meridian or Cartograph?",
       "assertions": [
         {
           "type": "not_contains",
-          "values": ["Stefan should choose Vercel", "Stefan should choose Langfuse", "Vercel is better", "Langfuse is better"]
+          "values": ["Stefan should choose Cartograph", "Stefan should choose Meridian", "Cartograph is better", "Meridian is better"]
         },
         {
           "type": "judge",

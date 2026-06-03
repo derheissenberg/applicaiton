@@ -24,6 +24,9 @@ export interface Assertion {
   value?: number;
   // For judge
   rubric?: string;
+  // Failure severity for this specific assertion. Omitted = "hard" (fails the
+  // job). "soft" assertions are reported as warnings but do not fail CI.
+  severity?: EvalFailureSeverity;
 }
 
 export interface EvalCase {
@@ -49,10 +52,13 @@ export interface EvalResult {
     type: AssertionType;
     passed: boolean;
     message: string;
+    severity?: EvalFailureSeverity;
   }>;
   durationMs: number;
   retries?: number;
 }
+
+export type EvalFailureSeverity = "hard" | "soft";
 
 export interface EvalRun {
   timestamp: string;
@@ -60,6 +66,8 @@ export interface EvalRun {
   totalCases: number;
   passedCases: number;
   failedCases: number;
+  hardFailedCases: number;
+  softFailedCases: number;
   durationMs: number;
   results: EvalResult[];
 }

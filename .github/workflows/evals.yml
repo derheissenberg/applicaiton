@@ -36,6 +36,7 @@ jobs:
           EVAL_BASE_URL: http://127.0.0.1:3000
           EVAL_SESSION_ID: eval-${{ github.run_id }}
           EVAL_DELAY_MS: '7000'
+          EVAL_CONTEXT_FIXTURES: 'true'
         run: |
           npm run start -- -p 3000 &
           SERVER_PID=$!

@@ -34,8 +34,31 @@ import type {
   EvalCase,
   EvalResult,
   EvalRun,
+  EvalFailureSeverity,
   AssertionType,
 } from "../types";
+
+/**
+ * Severity is per-assertion, not per-category. Each assertion carries an
+ * explicit `severity` in its dataset definition; omitted = "hard". A case
+ * hard-fails if ANY failed assertion is hard; it soft-fails only when every
+ * failed assertion is soft. This lets one case mix a soft style check with
+ * hard guardrails (e.g. quality_002: soft word_count/judge, hard buzzword
+ * not_contains). HTTP failures default to hard (no severity set).
+ */
+export function getFailureSeverity(
+  result: EvalResult
+): EvalFailureSeverity | null {
+  if (result.passed) return null;
+
+  const failedAssertions = result.assertions.filter((a) => !a.passed);
+  if (failedAssertions.length === 0) return "hard";
+
+  const anyHard = failedAssertions.some(
+    (a) => (a.severity ?? "hard") === "hard"
+  );
+  return anyHard ? "hard" : "soft";
+}
 
 const EVAL_DELAY_MS = parseInt(process.env.EVAL_DELAY_MS || "7000", 10);
 const SESSION_ID =
@@ -111,6 +134,7 @@ async function runCaseWithRetries(
           type: "contains_any" as AssertionType,
           passed: false,
           message: `HTTP failed after ${MAX_HTTP_RETRIES} attempts: ${lastError.message}`,
+          severity: "hard",
         },
       ],
       durationMs: 0,
@@ -125,6 +149,7 @@ async function runCaseWithRetries(
       type: assertion.type as AssertionType,
       passed: result.passed,
       message: result.message,
+      severity: assertion.severity ?? "hard",
     };
   });
 
@@ -143,6 +168,7 @@ async function runCaseWithRetries(
       type: "judge" as AssertionType,
       passed: result.passed,
       message: result.message,
+      severity: judgeAssertion.severity ?? "hard",
     });
   }
 
@@ -210,10 +236,12 @@ export async function runEvals(): Promise<EvalRun> {
     if (result.passed) {
       console.log(`  ✓ PASS${result.retries ? ` (judge retried ${result.retries}x)` : ""}`);
     } else {
-      console.log(`  ✗ FAIL`);
+      const severity = getFailureSeverity(result);
+      console.log(severity === "soft" ? `  ⚠ SOFT FAIL (warn only)` : `  ✗ FAIL`);
       for (const assertion of result.assertions) {
         if (!assertion.passed) {
-          console.log(`    - ${assertion.type}: ${assertion.message}`);
+          const tag = (assertion.severity ?? "hard") === "soft" ? " [soft]" : "";
+          console.log(`    - ${assertion.type}${tag}: ${assertion.message}`);
         }
       }
     }
@@ -227,6 +255,15 @@ export async function runEvals(): Promise<EvalRun> {
   // Calculate results
   const passedCases = results.filter((r) => r.passed).length;
   const failedCases = results.length - passedCases;
+  let hardFailedCases = 0;
+  let softFailedCases = 0;
+
+  for (const result of results) {
+    const severity = getFailureSeverity(result);
+    if (severity === "hard") hardFailedCases += 1;
+    if (severity === "soft") softFailedCases += 1;
+  }
+
   const durationMs = Date.now() - startTime;
 
   const run: EvalRun = {
@@ -235,6 +272,8 @@ export async function runEvals(): Promise<EvalRun> {
     totalCases: cases.length,
     passedCases,
     failedCases,
+    hardFailedCases,
+    softFailedCases,
     durationMs,
     results,
   };
@@ -249,24 +288,47 @@ export async function runEvals(): Promise<EvalRun> {
 /**
  * Print summary and exit
  */
-function printSummary(run: EvalRun): void {
+export function printSummary(run: EvalRun): void {
   console.log(`\n=== Eval Summary ===`);
   console.log(`Session ID: ${run.sessionId}`);
   console.log(`Total: ${run.totalCases} cases`);
   console.log(`Passed: ${run.passedCases} ✓`);
   console.log(`Failed: ${run.failedCases} ✗`);
+  console.log(`Hard failures (fail job): ${run.hardFailedCases}`);
+  console.log(`Soft failures (warn only): ${run.softFailedCases}`);
   console.log(`Duration: ${(run.durationMs / 1000).toFixed(1)}s`);
 
-  if (run.failedCases > 0) {
-    console.log(`\nFailed cases:`);
+  if (run.hardFailedCases > 0) {
+    console.log(`\nHard failures:`);
     for (const result of run.results) {
-      if (!result.passed) {
+      if (!result.passed && getFailureSeverity(result) === "hard") {
         console.log(`  - ${result.caseId} (${result.category})`);
       }
     }
   }
 
+  if (run.softFailedCases > 0) {
+    console.log(`\nSoft failures (job still passes):`);
+    for (const result of run.results) {
+      if (!result.passed && getFailureSeverity(result) === "soft") {
+        console.log(`  - ${result.caseId} (${result.category})`);
+        // GitHub Actions annotation — surfaces in the run UI without failing it.
+        const softMsgs = result.assertions
+          .filter((a) => !a.passed && (a.severity ?? "hard") === "soft")
+          .map((a) => `${a.type}: ${a.message}`)
+          .join(" | ");
+        console.log(
+          `::warning title=Soft eval failure (${result.caseId})::${softMsgs}`
+        );
+      }
+    }
+  }
+
   console.log("");
+}
+
+export function getEvalExitCode(run: EvalRun): number {
+  return run.hardFailedCases > 0 ? 1 : 0;
 }
 
 /**
@@ -276,9 +338,7 @@ async function main() {
   try {
     const run = await runEvals();
     printSummary(run);
-
-    // Exit with appropriate code
-    process.exit(run.failedCases > 0 ? 1 : 0);
+    process.exit(getEvalExitCode(run));
   } catch (error) {
     console.error("Fatal error:", error);
     process.exit(1);
