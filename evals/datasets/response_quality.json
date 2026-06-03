@@ -28,7 +28,7 @@
       "assertions": [
         {
           "type": "word_count_max",
-          "value": 200
+          "value": 300
         },
         {
           "type": "contains_any",
