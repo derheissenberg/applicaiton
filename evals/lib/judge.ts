@@ -66,8 +66,14 @@ export async function evaluateJudgeAssertion(
 
     const answer = result.text.trim().toUpperCase();
 
-    // Parse the result - look for PASS or FAIL
-    const passed = answer.includes("PASS") && !answer.includes("FAIL");
+    // The judge emits its verdict first, then may add reasoning that mentions
+    // "pass"/"fail" incidentally (or echoes a rubric term like "failed lookup").
+    // Take whichever verdict token appears FIRST rather than scanning the whole
+    // text — a plain `includes("FAIL")` wrongly fails a PASS whose reasoning
+    // merely contains the substring "fail".
+    const passIdx = answer.indexOf("PASS");
+    const failIdx = answer.indexOf("FAIL");
+    const passed = passIdx !== -1 && (failIdx === -1 || passIdx < failIdx);
 
     return {
       passed,
