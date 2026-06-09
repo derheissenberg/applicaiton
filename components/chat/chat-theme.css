@@ -868,6 +868,94 @@
   }
 }
 
+/* Reserve bottom space on short viewports so the cue does not overlap the input */
+@media (max-width: 767px) {
+  .chat-hero-min-height.chat-has-scroll-cue {
+    padding-bottom: clamp(88px, 18vw, 112px);
+  }
+}
+
+/* =========================================================
+   Hero scroll cue
+   ========================================================= */
+.chat-root .scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(20px, 4vw, 40px);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--chat-font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--chat-hero-kicker-fg);
+  transform: translateX(-50%);
+}
+
+.chat-root .scroll-cue:focus-visible {
+  outline: 2px solid var(--chat-accent-gradient-mid);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.chat-root .scroll-cue .line {
+  display: block;
+  width: 1px;
+  height: 40px;
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    var(--chat-accent-gradient-from),
+    var(--chat-accent-gradient-mid),
+    var(--chat-accent-gradient-to)
+  );
+  transition: filter 0.2s ease;
+}
+
+@keyframes scroll-cue-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.chat-root .scroll-cue.reveal {
+  opacity: 0;
+  transform: translateX(-50%) translateY(22px);
+}
+
+.chat-root .scroll-cue.reveal.in {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  animation: scroll-cue-enter 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.55s backwards;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+/* Match .btn-primary hover: lift + brighten */
+.chat-root .scroll-cue.reveal.in:hover,
+.chat-root .scroll-cue.reveal.in:focus-visible {
+  transform: translateX(-50%) translateY(-2px);
+  filter: brightness(1.07);
+}
+
+.chat-root .scroll-cue.reveal.in:hover .line,
+.chat-root .scroll-cue.reveal.in:focus-visible .line {
+  filter: brightness(1.12);
+}
+
 /* =========================================================
    Reduced Motion
    ========================================================= */
@@ -904,5 +992,13 @@
 
   .chat-input-shell:focus-within::before {
     animation: none !important;
+  }
+
+  .chat-root .scroll-cue.reveal,
+  .chat-root .scroll-cue.reveal.in {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    animation: none;
+    transition: none;
   }
 }

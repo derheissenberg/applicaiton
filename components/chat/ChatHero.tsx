@@ -1,6 +1,6 @@
 "use client";
 
-import type { RefObject } from "react";
+import { useCallback, useEffect, useState, type RefObject } from "react";
 import { cn } from "@/lib/utils";
 import {
   HeroDescription,
@@ -8,6 +8,14 @@ import {
   Kicker,
 } from "@/components/ui/typography";
 import { ChatInputRow } from "./ChatInputRow";
+
+const DEFAULT_SCROLL_CUE_LABEL = "Scroll to explore";
+
+export type ScrollCueConfig = {
+  label?: string;
+  targetId?: string;
+  onClick?: () => void;
+};
 
 type ChatHeroProps = {
   input: string;
@@ -18,6 +26,7 @@ type ChatHeroProps = {
   onInputFocus?: () => void;
   onInputBlur?: () => void;
   inputRef?: RefObject<HTMLInputElement | null>;
+  scrollCue?: ScrollCueConfig;
 };
 
 export function ChatHero({
@@ -29,11 +38,43 @@ export function ChatHero({
   onInputFocus,
   onInputBlur,
   inputRef,
+  scrollCue,
 }: ChatHeroProps) {
+  const [cueRevealed, setCueRevealed] = useState(false);
+  const scrollCueLabel = scrollCue?.label ?? DEFAULT_SCROLL_CUE_LABEL;
+
+  useEffect(() => {
+    if (!scrollCue) {
+      setCueRevealed(false);
+      return;
+    }
+    const frame = requestAnimationFrame(() => setCueRevealed(true));
+    return () => cancelAnimationFrame(frame);
+  }, [scrollCue]);
+
+  const handleScrollCueClick = useCallback(() => {
+    if (!scrollCue) return;
+
+    if (scrollCue.onClick) {
+      scrollCue.onClick();
+      return;
+    }
+
+    if (scrollCue.targetId) {
+      document
+        .getElementById(scrollCue.targetId)
+        ?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+
+    window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
+  }, [scrollCue]);
+
   return (
     <div
       className={cn(
         "chat-hero-min-height relative flex w-full flex-col items-center justify-center px-5 py-20 lg:px-12 lg:py-[120px]",
+        scrollCue && "chat-has-scroll-cue",
         "transition-[opacity,transform] duration-300 ease-out",
         isHidden
           ? "pointer-events-none -translate-y-5 opacity-0"
@@ -53,7 +94,10 @@ export function ChatHero({
         aria-hidden="true"
         className="chat-portrait chat-portrait-overlay pointer-events-none"
       />
-      <div className="relative z-10 mx-auto w-full max-w-[var(--chat-hero-max-width)] text-center" data-hero-content="">
+      <div
+        className="relative z-10 mx-auto w-full max-w-[var(--chat-hero-max-width)] text-center"
+        data-hero-content=""
+      >
         {/* Pass theme colors via style/class overrides */}
         <Kicker
           className="text-[var(--chat-hero-kicker-fg)]"
@@ -96,6 +140,19 @@ export function ChatHero({
           inputRef={inputRef}
         />
       </div>
+
+      {scrollCue && (
+        <button
+          type="button"
+          className={cn("scroll-cue reveal", cueRevealed && "in")}
+          data-d="4"
+          aria-label={scrollCueLabel}
+          onClick={handleScrollCueClick}
+        >
+          <span>{scrollCueLabel}</span>
+          <span className="line" aria-hidden="true" />
+        </button>
+      )}
     </div>
   );
 }

@@ -113,7 +113,11 @@ export function ApplicaitonDocs() {
       <div className="docs-wrap">
 
         {/* BLOCK 1 — statement */}
-        <section className="block statement" data-screen-label="01-statement">
+        <section
+          className="block statement"
+          id="how-it-works"
+          data-screen-label="01-statement"
+        >
           <span className="kicker reveal">
             OPEN SOURCE<span className="dot">·</span>MIT LICENSE
           </span>

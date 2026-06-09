@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import { ChatHero } from "./ChatHero";
+import { ChatHero, type ScrollCueConfig } from "./ChatHero";
 import { ChatConversation } from "./ChatConversation";
 import { useBodyScrollLock } from "./useBodyScrollLock";
 import { useHeroInputKeyboardAlign } from "./useHeroInputKeyboardAlign";
@@ -12,9 +12,14 @@ import "./chat-theme.css";
 export type ChatProps = {
   theme?: "dark-tokyo" | "stefan-portfolio";
   assistantLabel?: string;
+  scrollCue?: ScrollCueConfig;
 };
 
-export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: ChatProps) {
+export function Chat({
+  theme = "dark-tokyo",
+  assistantLabel = "Assistant",
+  scrollCue,
+}: ChatProps) {
   // Mode state: "hero" | "conversation"
   const [mode, setMode] = useState<"hero" | "conversation">("hero");
 
@@ -122,6 +127,7 @@ export function Chat({ theme = "dark-tokyo", assistantLabel = "Assistant" }: Cha
           onInputFocus={() => setHeroInputFocused(true)}
           onInputBlur={() => setHeroInputFocused(false)}
           inputRef={heroInputRef}
+          scrollCue={scrollCue}
         />
       )}
 

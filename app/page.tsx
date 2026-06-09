@@ -12,7 +12,10 @@ export default function Home() {
         className="applicaiton-hero-host w-full"
         style={{ ["--chat-hero-min-height-desktop" as string]: "100dvh" }}
       >
-        <Chat theme="dark-tokyo" />
+        <Chat
+          theme="dark-tokyo"
+          scrollCue={{ label: "How it works", targetId: "how-it-works" }}
+        />
       </section>
       <ApplicaitonDocs />
     </main>
