@@ -24,7 +24,7 @@ A single request, server-side: rate limit (Upstash sliding window per IP) → as
 git clone https://github.com/derheissenberg/applicaiton
 cd applicaiton
 npm install
-cp .env.example .env.local   # then fill in your keys
+cp .env.local.example .env.local   # then fill in your keys
 npm run dev
 ```
 
@@ -32,13 +32,28 @@ Open [http://localhost:3000](http://localhost:3000). Edit `app/page.tsx` to chan
 
 ### Environment
 
-Set these in `.env.local` — see `.env.example` for the full list:
+Set these in `.env.local` — see `.env.local.example` for the full list:
 
-- `ANTHROPIC_API_KEY`
-- `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`
-- your Langfuse keys
+- `ANTHROPIC_API_KEY` — **required.** As shipped the bot streams from Claude Haiku 4.5. Because it goes through the Vercel AI SDK (provider-agnostic), pointing it at another provider — OpenAI, Google, and so on — is a small swap in `app/api/chat/route.ts`, not just an env change.
+- `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` — optional (rate limiting). Unset, the limiter fails open and every request is allowed.
+- Langfuse keys — optional (tracing). Unset, tracing is skipped.
+
+The Anthropic key is the only thing you need to run locally.
 
 > **Do not wrap values in quotes.** Next.js treats the quotes as part of the value, and several of these dependencies fail open silently when that happens.
+
+## Make it yours
+
+Forking ApplicAIton to point at your own story is a handful of edits — no component code required. Everything personal lives in two files you own: the knowledge folder and the persona prompt.
+
+1. **Swap the knowledge base.** Replace the markdown in [`knowledge/`](knowledge/) with your own — identity, narrative, experience, projects, skills, credentials, case studies, philosophy, FAQ, guardrails. This is the bot's only source of truth; it answers from here and nowhere else. See [Knowledge base](#knowledge-base).
+2. **Retarget the persona prompt.** [`chatbot-prompt.txt`](chatbot-prompt.txt) names its subject throughout — but you don't need to rewrite it. Retarget only the sections that mention a person: **§1 Identity**, **§2 Source of truth** (name + contact email), **§6 positioning**, and **§12–13** (contact email + portfolio links). The voice, formatting, anti-injection, and honesty rules (§3–5, §8–11) carry over unchanged.
+3. **Pick or define a theme.** Use a shipped identity (`dark-tokyo` or `stefan-portfolio`) via the `theme` prop, or add your own `[data-theme="your-name"]` palette. No color is hardcoded in component code. See [Theming](#theming).
+4. **Set one key.** Only `ANTHROPIC_API_KEY` is required to run. See [Environment](#environment).
+5. **Embed it.** Three lines on your host page. See [Embedding](#embedding).
+6. **Deploy.** Vercel or any Next.js host. See [Deploy](#deploy).
+
+Per-company calibration files are optional and never live in git — see [Per-company context](#per-company-context-optional).
 
 ## Embedding
 
@@ -62,7 +77,7 @@ Visual identity is CSS custom properties — no hardcoded colors, and no theme b
 
 ## Knowledge base
 
-The bot's knowledge is plain markdown in `/knowledge` (~25K tokens, prompt-stuffed with caching). Replace those files with your own and the bot answers from your story. The code never hardcodes personal facts — you swap the folder, not the source.
+The bot's knowledge is plain markdown in `/knowledge` (~25K tokens, prompt-stuffed with caching). Replace those files with your own and the bot answers from your story. The component code never hardcodes personal facts — you swap the folder, not the source. The one thing the folder doesn't carry is the bot's name, contact email, and positioning: those live in the persona prompt (`chatbot-prompt.txt`), so retarget it too — see [Make it yours](#make-it-yours).
 
 ## Per-company context (optional)
 
