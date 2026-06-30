@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import type { UIMessage } from "ai";
 import { formatChatErrorMessage } from "@/lib/chat-errors";
+import { ChatMarkdown } from "@/lib/chat-markdown";
 import { ChatInputRow } from "./ChatInputRow";
 import { MinimizeIcon } from "./MinimizeIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
@@ -179,9 +180,7 @@ export function ChatConversation({
                   <div className="chat-assistant-block">
                     <div className="chat-meta">{assistantLabel}</div>
                     <div className="chat-bubble-assistant-clean">
-                      {getMessageText(message).split("\n\n").map((para, idx) => (
-                        <p key={idx}>{para}</p>
-                      ))}
+                      <ChatMarkdown text={getMessageText(message)} />
                     </div>
                   </div>
                 ) : (

@@ -404,6 +404,90 @@
 }
 
 /* =========================================================
+   Assistant markdown rendering (scoped — must not leak)
+   ========================================================= */
+.chat-bubble-assistant-clean > :first-child {
+  margin-top: 0;
+}
+
+.chat-bubble-assistant-clean > :last-child {
+  margin-bottom: 0;
+}
+
+.chat-bubble-assistant-clean p {
+  margin: 0 0 0.75em;
+}
+
+.chat-bubble-assistant-clean strong {
+  font-weight: 600;
+  color: inherit;
+}
+
+.chat-bubble-assistant-clean em {
+  font-style: italic;
+}
+
+.chat-bubble-assistant-clean :is(h2, h3, h4) {
+  color: inherit;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 1.1em 0 0.5em;
+}
+
+.chat-bubble-assistant-clean h2 {
+  font-size: 1.15rem;
+}
+
+.chat-bubble-assistant-clean h3 {
+  font-size: 1.05rem;
+}
+
+.chat-bubble-assistant-clean h4 {
+  font-size: 0.975rem;
+}
+
+.chat-bubble-assistant-clean :is(ul, ol) {
+  margin: 0 0 0.75em;
+  padding-left: 1.35em;
+}
+
+.chat-bubble-assistant-clean ul {
+  list-style: disc;
+}
+
+.chat-bubble-assistant-clean ol {
+  list-style: decimal;
+}
+
+.chat-bubble-assistant-clean li {
+  margin: 0.2em 0;
+  padding-left: 0.15em;
+}
+
+.chat-bubble-assistant-clean li::marker {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.chat-bubble-assistant-clean a {
+  color: var(--chat-accent-gradient-mid, #3b82f6);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+}
+
+.chat-bubble-assistant-clean a:hover {
+  text-decoration-thickness: 2px;
+}
+
+.chat-bubble-assistant-clean code {
+  font-family: var(--chat-font-mono, ui-monospace, monospace);
+  font-size: 0.875em;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+/* =========================================================
    Assistant Row Layout
    ========================================================= */
 .chat-assistant-row {
